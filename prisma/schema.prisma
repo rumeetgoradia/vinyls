@@ -1,0 +1,48 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model Album {
+    id          String @id @default(uuid())
+    title       String
+    artist      String
+    coverArtUrl String
+    label       String
+    year        Int
+    songs       Song[]
+    totalLength String
+    price       Float
+    order       Order? @relation(fields: [orderId], references: [id])
+    orderId     Int?
+}
+
+model Song {
+    id       String @id @default(uuid())
+    title    String
+    producer String
+    length   String
+    album    Album  @relation(fields: [albumId], references: [id])
+    albumId  String
+}
+
+model Order {
+    id         Int      @id @default(autoincrement())
+    datePlaced DateTime @default(now())
+    albums     Album[]
+    totalPrice Float
+    user       User     @relation(fields: [userId], references: [id])
+    userId     Int
+}
+
+model User {
+    id       Int     @id @default(autoincrement())
+    name     String
+    email    String  @unique
+    password String
+    orders   Order[]
+}
