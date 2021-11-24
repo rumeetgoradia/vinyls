@@ -1,48 +1,75 @@
-datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
-}
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Album {
-    id          String @id @default(uuid())
-    title       String
-    artist      String
-    coverArtUrl String
-    label       String
-    year        Int
-    songs       Song[]
-    totalLength String
-    price       Float
-    order       Order? @relation(fields: [orderId], references: [id])
-    orderId     Int?
+  id          String           @id @default(cuid())
+  title       String
+  artists     String[]
+  coverArtUrl String
+  year        Int
+  genres      String[]
+  labels      String[]
+  producers   String[]
+  totalLength String
+  price       Float
+  songs       Song[]
+  orders      AlbumsInOrders[]
+  carts       AlbumsInCarts[]
 }
 
 model Song {
-    id       String @id @default(uuid())
-    title    String
-    producer String
-    length   String
-    album    Album  @relation(fields: [albumId], references: [id])
-    albumId  String
+  id            String @id @default(cuid())
+  title         String
+  length        String
+  numberOnAlbum Int
+  album         Album  @relation(fields: [albumId], references: [id])
+  albumId       String
 }
 
 model Order {
-    id         Int      @id @default(autoincrement())
-    datePlaced DateTime @default(now())
-    albums     Album[]
-    totalPrice Float
-    user       User     @relation(fields: [userId], references: [id])
-    userId     Int
+  id         Int              @id @default(autoincrement())
+  datePlaced DateTime         @default(now())
+  totalPrice Float
+  user       User             @relation(fields: [userId], references: [id])
+  userId     Int
+  albums     AlbumsInOrders[]
 }
 
 model User {
-    id       Int     @id @default(autoincrement())
-    name     String
-    email    String  @unique
-    password String
-    orders   Order[]
+  id           Int             @id @default(autoincrement())
+  name         String
+  email        String          @unique
+  password     String
+  orders       Order[]
+  albumsInCart AlbumsInCarts[]
+}
+
+model AlbumsInOrders {
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderId   Int
+  album     Album    @relation(fields: [albumId], references: [id])
+  albumId   String
+  numAlbums Int      @default(1)
+  addedAt   DateTime @default(now())
+
+  @@id([orderId, albumId])
+}
+
+model AlbumsInCarts {
+  user     User   @relation(fields: [userId], references: [id])
+  userId   Int
+  album    Album  @relation(fields: [albumId], references: [id])
+  albumId  String
+  quantity Int    @default(1)
+
+  @@id([userId, albumId])
 }
