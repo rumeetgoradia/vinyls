@@ -5,7 +5,16 @@ class MyDocument extends Document {
 	render() {
 		return (
 			<Html lang="en">
-				<Head>{/* Add favicon info */}</Head>
+				<Head>
+					<link
+						rel="preload"
+						href="/fonts/~~.woff2"
+						as="font"
+						type="font/woff2"
+						crossOrigin="anonymous"
+					/>
+					{/* Add favicon info */}
+				</Head>
 				<body>
 					<Main />
 					<NextScript />

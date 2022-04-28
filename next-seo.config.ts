@@ -1,21 +1,23 @@
-import { SITE_NAME, SITE_URL } from "@constants"
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@constants"
 import { NextSeoProps } from "next-seo"
 
 const SeoProps: NextSeoProps = {
-	description: SITE_NAME,
+	defaultTitle: SITE_NAME,
+	titleTemplate: `%s — ${SITE_NAME}`,
+	description: SITE_DESCRIPTION,
 	canonical: SITE_URL,
 	openGraph: {
 		title: SITE_NAME,
-		description: SITE_NAME,
+		description: SITE_DESCRIPTION,
 		type: "website",
 		locale: "en_IE",
 		url: SITE_URL,
 		site_name: SITE_NAME,
 		images: [
 			{
-				url: `${SITE_URL}/images/logo.png`,
-				width: 200,
-				height: 200,
+				url: `/images/seo/card.png`,
+				width: 1200,
+				height: 628,
 				alt: SITE_NAME,
 			},
 		],

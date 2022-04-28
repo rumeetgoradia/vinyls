@@ -1,6 +1,6 @@
 {
-  "name": "vinyls",
-  "version": "1.0.0",
+  "name": "~~",
+  "version": "1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -8,46 +8,31 @@
     "start": "next start",
     "lint": "next lint",
     "tsc": "npx tsc",
-    "gen:theme-typings": "chakra-cli tokens theme/index.ts",
-    "postinstall": "npm run gen:theme-typings"
-  },
-  "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
-    "@chakra-ui/react": "^1.6.10",
-    "@emotion/react": "^11.5.0",
-    "@emotion/styled": "^11.3.0",
-    "@plaiceholder/next": "^2.1.0",
-    "@prisma/client": "^3.4.2",
-    "@stripe/react-stripe-js": "^1.6.0",
-    "@stripe/stripe-js": "^1.21.1",
-    "argon2": "^0.28.2",
-    "cookie": "^0.4.1",
-    "framer-motion": "^4.1.17",
-    "jsonwebtoken": "^8.5.1",
-    "next": "11.1.2",
-    "next-connect": "^0.11.0",
-    "next-seo": "^4.28.1",
-    "plaiceholder": "^2.0.1",
-    "preact": "^10.5.15",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "react-hook-form": "^7.19.5",
+    "@chakra-ui/react": "^1.8.8",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@plaiceholder/next": "^2.3.0",
+    "framer-motion": "^6.3.3",
+    "next": "^12.1.5",
+    "next-connect": "^0.12.2",
+    "next-seo": "^5.4.0",
+    "next-sitemap": "^2.5.20",
+    "plaiceholder": "^2.3.0",
+    "preact": "^10.7.1",
+    "react": "18.1.0",
+    "react-dom": "18.1.0",
+    "react-hook-form": "^7.30.0",
     "react-icons": "^4.3.1",
-    "react-query": "^3.33.1",
     "redaxios": "^0.4.1",
-    "sharp": "^0.29.2",
-    "superjson": "^1.8.0"
+    "sharp": "^0.30.4"
   },
   "devDependencies": {
-    "@chakra-ui/cli": "^1.5.3",
-    "@types/cookie": "^0.4.1",
-    "@types/jsonwebtoken": "^8.5.6",
-    "@types/react": "17.0.31",
-    "eslint": "7.32.0",
-    "eslint-config-next": "11.1.2",
-    "prisma": "^3.4.2",
-    "typescript": "4.4.4"
+    "@types/react": "18.0.8",
+    "eslint": "8.14.0",
+    "eslint-config-next": "12.1.5",
+    "typescript": "4.6.3"
   }
 }
