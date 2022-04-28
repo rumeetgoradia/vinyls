@@ -1,47 +1,95 @@
-import { User } from ".prisma/client"
+import { Album, User } from ".prisma/client"
 import { Button } from "@chakra-ui/button"
-import { Text } from "@chakra-ui/layout"
+import { Box, Text } from "@chakra-ui/layout"
+import useServerRefresher from "@hooks/useServerRefresher"
+import { prisma } from "@lib/prisma"
 import { getUserFromCookie } from "@web"
+import { useSession } from "context/session"
 import type { GetServerSidePropsContext, NextPage } from "next"
-import redaxios from "redaxios"
+import Link from "next/link"
+import { useEffect } from "react"
+import { useMutation } from "react-query"
+import redaxios, { Response } from "redaxios"
 import superjson from "superjson"
 
 export const getServerSideProps = async (
 	context: GetServerSidePropsContext
 ) => {
-	const user = await getUserFromCookie()
-	if (!user) return { props: {} }
+	const userFromCookie = await getUserFromCookie(context.req)
+	const featuredAlbums = await prisma.album.findMany({
+		where: {
+			isFeatured: true,
+		},
+		orderBy: {
+			id: "asc",
+		},
+		select: {
+			title: true,
+			artists: true,
+			id: true,
+			price: true,
+			coverArtUrl: true,
+		},
+	})
 
-	// Always use superjson as Next.js
-	// can't serialize prisma objects by default
 	return {
 		props: superjson.serialize({
-			user,
+			userFromCookie,
+			featuredAlbums,
 		}).json,
 	}
 }
 
 type HomePageProps = {
-	user?: User
+	userFromCookie?: User
+	featuredAlbums: Album[]
 }
 
-const HomePage: NextPage<HomePageProps> = ({ user }) => {
-	const handleLogout = () => redaxios.delete("/api/sessions")
+const HomePage: NextPage<HomePageProps> = ({
+	userFromCookie,
+	featuredAlbums,
+}) => {
+	const serverRefresher = useServerRefresher()
+
+	const { user, signIn, signOut } = useSession()
+
+	useEffect(() => {
+		signIn(userFromCookie)
+	})
+
+	const {
+		isLoading,
+		isError,
+		mutate: signOutMutation,
+	} = useMutation(() => redaxios.delete("/api/session"), {
+		onSuccess: (data: Response<User>) => {
+			signOut()
+			serverRefresher()
+		},
+	})
+
 	return (
 		<main>
 			{user ? (
 				<>
 					<Text>hello {user.name}</Text>
-					<Button type="button" onClick={handleLogout}>
+					<Button type="button" onClick={() => signOutMutation()}>
 						Logout
 					</Button>
 				</>
 			) : (
 				<>
 					<Text>Not logged in</Text>
-					<Button type="button"></Button>{" "}
+					<Link href="/register" passHref>
+						<Button type="button">Sign In</Button>
+					</Link>
 				</>
 			)}
+			<Box>
+				{featuredAlbums.map((album) => (
+					<Box>{album.title}</Box>
+				))}
+			</Box>
 		</main>
 	)
 }

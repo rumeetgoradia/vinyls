@@ -1,5 +1,6 @@
 import { Chakra } from "@components/Chakra"
 import theme from "@theme"
+import { SessionProvider } from "context/session"
 import { DefaultSeo } from "next-seo"
 import SeoProps from "next-seo.config"
 import type { AppProps } from "next/app"
@@ -11,11 +12,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<>
 			<DefaultSeo {...SeoProps} />
-			<QueryClientProvider client={queryClient}>
-				<Chakra cookies={pageProps.cookies} theme={theme}>
-					<Component {...pageProps} />
-				</Chakra>
-			</QueryClientProvider>
+			<SessionProvider>
+				<QueryClientProvider client={queryClient}>
+					<Chakra cookies={pageProps.cookies} theme={theme}>
+						<Component {...pageProps} />
+					</Chakra>
+				</QueryClientProvider>
+			</SessionProvider>
 		</>
 	)
 }

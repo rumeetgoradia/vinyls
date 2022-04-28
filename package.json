@@ -12,7 +12,7 @@
     "postinstall": "npm run gen:theme-typings"
   },
   "prisma": {
-    "seed": "ts-node -O {\"module\":\"CommonJS\"} prisma/seed.ts"
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.6.10",
@@ -25,7 +25,6 @@
     "argon2": "^0.28.2",
     "cookie": "^0.4.1",
     "framer-motion": "^4.1.17",
-    "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "next": "11.1.2",
     "next-connect": "^0.11.0",
@@ -44,7 +43,6 @@
   "devDependencies": {
     "@chakra-ui/cli": "^1.5.3",
     "@types/cookie": "^0.4.1",
-    "@types/js-cookie": "^3.0.1",
     "@types/jsonwebtoken": "^8.5.6",
     "@types/react": "17.0.31",
     "eslint": "7.32.0",

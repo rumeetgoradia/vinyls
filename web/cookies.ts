@@ -1,5 +1,6 @@
-import * as Cookies from "js-cookie"
+import { CookieSerializeOptions, serialize } from "cookie"
 import jwt from "jsonwebtoken"
+import { NextApiResponse } from "next"
 
 const JWT_SECRET = process.env.JWT_SECRET
 
@@ -11,31 +12,41 @@ export const createJWT = (payload: string | object): string => {
 	return token
 }
 
-export const verifyJWT = (
-	token: string,
-	callback: (data: string | jwt.JwtPayload) => {}
-) => {
+export const verifyJWT = (token: string) => {
 	const data = jwt.verify(token, JWT_SECRET)
 
 	if (!data) {
 		return undefined
 	}
 
-	return callback(data)
+	return data
 }
 
-const cookieOptions: Cookies.CookieAttributes = {
+const cookieOptions: CookieSerializeOptions = {
 	httpOnly: true,
-	expires: 30,
+	maxAge: 2592000,
 	path: "/",
-	sameSite: "Strict",
+	sameSite: "strict",
 	secure: process.env.NODE_ENV === "production",
 }
 
-export const setCookie = (name: string, value: string | object): void => {
+export const setCookie = (
+	res: any,
+	name: string,
+	value: string | object
+): void => {
 	const stringValue =
 		typeof value === "object" ? `j:${JSON.stringify(value)}` : String(value)
 
-	Cookies.remove(name)
-	Cookies.set(name, stringValue, cookieOptions)
+	res.setHeader(
+		"Set-Cookie",
+		serialize(name, String(stringValue), cookieOptions)
+	)
+}
+
+export const clearCookie = (res: NextApiResponse, name: string): void => {
+	res.setHeader(
+		"Set-Cookie",
+		serialize(name, "0", { ...cookieOptions, maxAge: 1 })
+	)
 }

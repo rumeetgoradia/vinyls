@@ -7,6 +7,7 @@ import useServerRefresher from "@hooks/useServerRefresher"
 import { getUserFromCookie } from "@web"
 import { useSession } from "context/session"
 import { GetServerSidePropsContext, NextPage } from "next"
+import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
 import { useMutation } from "react-query"
 import redaxios, { Response } from "redaxios"
@@ -14,7 +15,7 @@ import redaxios, { Response } from "redaxios"
 export const getServerSideProps = async (
 	context: GetServerSidePropsContext
 ) => {
-	const user = getUserFromCookie()
+	const user = await getUserFromCookie(context.req)
 
 	if (user) {
 		return {
@@ -39,6 +40,7 @@ type RegisterData = {
 const RegisterPage: NextPage = () => {
 	const serverRefresher = useServerRefresher()
 	const { signIn } = useSession()
+	const router = useRouter()
 
 	const {
 		register,
@@ -54,7 +56,7 @@ const RegisterPage: NextPage = () => {
 		(params: RegisterData) => redaxios.post("/api/register", params),
 		{
 			onSuccess: (data: Response<User>) => {
-				console.log(data.data)
+				signIn(data.data)
 				serverRefresher()
 			},
 		}

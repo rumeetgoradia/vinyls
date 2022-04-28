@@ -1,13 +1,5 @@
 import { Album, AlbumsInCarts, User } from ".prisma/client"
-import {
-	clearCartCookie,
-	clearUserCookie,
-	setCartCookie,
-	setUserCookie,
-} from "@web"
 import React, { useContext, useState } from "react"
-import { useMutation } from "react-query"
-import redaxios, { Response } from "redaxios"
 
 type SessionContextType = {
 	user?: User
@@ -22,152 +14,145 @@ const SessionContext = React.createContext<SessionContextType>({})
 
 export const SessionProvider: React.FC = ({ children }) => {
 	const [user, setUser] = useState<User>()
-	const [cart, setCart] = useState<AlbumsInCarts[]>()
+	// const [cart, setCart] = useState<AlbumsInCarts[]>()
 
-	const signIn = (newUser: User) => {
-		for (const albumInCart of cart) {
-			const { albumId, quantity } = albumInCart
-			addToUserCart(albumId, quantity)
-		}
-		clearCartCookie()
-		setUserCookie(newUser)
-		setUser(newUser)
+	const signIn = (user: User) => {
+		setUser(user)
 	}
 
 	const signOut = () => {
 		setUser(undefined)
-		clearUserCookie()
 	}
 
-	type AddToCartParams = {
-		albumId: string
-		quantity: number
-		increment?: boolean
-	}
-	const addToCart = async (params: AddToCartParams) => {
-		const { albumId, increment, quantity } = params
-		let newCart: AlbumsInCarts[] = []
+	// type AddToCartParams = {
+	// 	albumId: string
+	// 	quantity: number
+	// 	increment?: boolean
+	// }
+	// const addToCart = async (params: AddToCartParams) => {
+	// 	const { albumId, increment, quantity } = params
+	// 	let newCart: AlbumsInCarts[] = []
 
-		if (user) {
-			newCart = await addToUserCart(albumId, quantity, increment)
-		} else {
-			newCart = await addToCookieCart(albumId, quantity, increment)
-		}
+	// 	if (user) {
+	// 		newCart = await addToUserCart(albumId, quantity, increment)
+	// 	} else {
+	// 		newCart = await addToCookieCart(albumId, quantity, increment)
+	// 	}
 
-		setCart(newCart)
-	}
+	// 	setCart(newCart)
+	// }
 
-	type RemoveFromCartParams = {
-		albumId: string
-	}
-	const removeFromCart = async (params: RemoveFromCartParams) => {
-		const { albumId } = params
-		let newCart: AlbumsInCarts[] = []
+	// type RemoveFromCartParams = {
+	// 	albumId: string
+	// }
+	// const removeFromCart = async (params: RemoveFromCartParams) => {
+	// 	const { albumId } = params
+	// 	let newCart: AlbumsInCarts[] = []
 
-		if (user) {
-			newCart = await removeFromUserCart(albumId)
-		} else {
-			newCart = await removeFromCookieCart(albumId)
-		}
+	// 	if (user) {
+	// 		newCart = await removeFromUserCart(albumId)
+	// 	} else {
+	// 		newCart = await removeFromCookieCart(albumId)
+	// 	}
 
-		setCart(newCart)
-	}
+	// 	setCart(newCart)
+	// }
 
-	const { mutate: addToUserCartMutation } = useMutation(
-		(params: AddToCartParams & { userId: number }) =>
-			redaxios.post("/api/cart", params)
-	)
+	// const { mutate: addToUserCartMutation } = useMutation(
+	// 	(params: AddToCartParams & { userId: number }) =>
+	// 		redaxios.post("/api/cart", params)
+	// )
 
-	const addToUserCart = async (
-		albumId: string,
-		quantity: number,
-		increment?: boolean
-	): Promise<AlbumsInCarts[]> => {
-		let newCart = []
+	// const addToUserCart = async (
+	// 	albumId: string,
+	// 	quantity: number,
+	// 	increment?: boolean
+	// ): Promise<AlbumsInCarts[]> => {
+	// 	let newCart = []
 
-		if (user) {
-			addToUserCartMutation(
-				{ albumId, quantity, increment, userId: user.id },
-				{
-					onSuccess: (data: Response<AlbumsInCarts[]>) => {
-						newCart = data.data
-					},
-				}
-			)
-		}
+	// 	if (user) {
+	// 		addToUserCartMutation(
+	// 			{ albumId, quantity, increment, userId: user.id },
+	// 			{
+	// 				onSuccess: (data: Response<AlbumsInCarts[]>) => {
+	// 					newCart = data.data
+	// 				},
+	// 			}
+	// 		)
+	// 	}
 
-		return newCart
-	}
+	// 	return newCart
+	// }
 
-	const addToCookieCart = async (
-		albumId: string,
-		quantity: number,
-		increment?: boolean
-	): Promise<AlbumsInCarts[]> => {
-		let newCart: AlbumsInCarts[] = []
+	// const addToCookieCart = async (
+	// 	albumId: string,
+	// 	quantity: number,
+	// 	increment?: boolean
+	// ): Promise<AlbumsInCarts[]> => {
+	// 	let newCart: AlbumsInCarts[] = []
 
-		if (!user) {
-			const matchingAlbumsInCart = cart.filter((aic) => aic.albumId === albumId)
+	// 	if (!user) {
+	// 		const matchingAlbumsInCart = cart.filter((aic) => aic.albumId === albumId)
 
-			if (matchingAlbumsInCart?.length) {
-				const match = { ...matchingAlbumsInCart[0] }
-				match.quantity = increment ? match.quantity + quantity : quantity
-				const nonMatchingAlbumsInCart = cart.filter(
-					(aic) => aic.albumId !== albumId
-				)
-				newCart = [...nonMatchingAlbumsInCart, match]
-			} else {
-				newCart = [
-					...cart,
-					{
-						albumId,
-						quantity,
-						userId: -1,
-					},
-				]
-			}
-		}
+	// 		if (matchingAlbumsInCart?.length) {
+	// 			const match = { ...matchingAlbumsInCart[0] }
+	// 			match.quantity = increment ? match.quantity + quantity : quantity
+	// 			const nonMatchingAlbumsInCart = cart.filter(
+	// 				(aic) => aic.albumId !== albumId
+	// 			)
+	// 			newCart = [...nonMatchingAlbumsInCart, match]
+	// 		} else {
+	// 			newCart = [
+	// 				...cart,
+	// 				{
+	// 					albumId,
+	// 					quantity,
+	// 					userId: -1,
+	// 				},
+	// 			]
+	// 		}
+	// 	}
 
-		setCartCookie(newCart)
-		return newCart
-	}
+	// 	setCartCookie(newCart)
+	// 	return newCart
+	// }
 
-	const { mutate: removeFromUserCartMutation } = useMutation(
-		(params: RemoveFromCartParams & { userId: number }) =>
-			redaxios.delete("/api/cart", { params })
-	)
+	// const { mutate: removeFromUserCartMutation } = useMutation(
+	// 	(params: RemoveFromCartParams & { userId: number }) =>
+	// 		redaxios.delete("/api/cart", { params })
+	// )
 
-	const removeFromUserCart = async (
-		albumId: string
-	): Promise<AlbumsInCarts[]> => {
-		let newCart = []
+	// const removeFromUserCart = async (
+	// 	albumId: string
+	// ): Promise<AlbumsInCarts[]> => {
+	// 	let newCart = []
 
-		if (user) {
-			removeFromUserCartMutation(
-				{ albumId, userId: user.id },
-				{
-					onSuccess: (data: Response<AlbumsInCarts[]>) => {
-						newCart = cart.filter((aic) => aic.albumId !== albumId)
-					},
-				}
-			)
-		}
+	// 	if (user) {
+	// 		removeFromUserCartMutation(
+	// 			{ albumId, userId: user.id },
+	// 			{
+	// 				onSuccess: (data: Response<AlbumsInCarts[]>) => {
+	// 					newCart = cart.filter((aic) => aic.albumId !== albumId)
+	// 				},
+	// 			}
+	// 		)
+	// 	}
 
-		return newCart
-	}
+	// 	return newCart
+	// }
 
-	const removeFromCookieCart = async (
-		albumId: string
-	): Promise<AlbumsInCarts[]> => {
-		let newCart = []
+	// const removeFromCookieCart = async (
+	// 	albumId: string
+	// ): Promise<AlbumsInCarts[]> => {
+	// 	let newCart = []
 
-		if (!user) {
-			newCart = cart.filter((aic) => aic.albumId !== albumId)
-		}
+	// 	if (!user) {
+	// 		newCart = cart.filter((aic) => aic.albumId !== albumId)
+	// 	}
 
-		setCartCookie(newCart)
-		return newCart
-	}
+	// 	setCartCookie(newCart)
+	// 	return newCart
+	// }
 
 	// const getCartAlbumsInfo = (): { [key: string]: Album } => {
 	// 	const albumsInfo = {}
@@ -191,11 +176,13 @@ export const SessionProvider: React.FC = ({ children }) => {
 		<SessionContext.Provider
 			value={{
 				user,
-				cart,
 				signIn,
 				signOut,
-				addToCart,
-				removeFromCart,
+				// cart,
+				// signIn,
+				// signOut,
+				// addToCart,
+				// removeFromCart,
 				// getCartAlbumsInfo,
 			}}
 		>

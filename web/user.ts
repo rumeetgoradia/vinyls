@@ -1,34 +1,45 @@
 import { User } from ".prisma/client"
 import { prisma } from "@lib/prisma"
-import * as Cookies from "js-cookie"
-import { createJWT, setCookie, verifyJWT } from "./cookies"
+import { IncomingMessage } from "http"
+import { NextApiResponse } from "next"
+import { NextApiRequestCookies } from "next/dist/server/api-utils"
+import { clearCookie, createJWT, setCookie, verifyJWT } from "./cookies"
 
-const COOKIE_NAME = "user"
+export const USER_COOKIE_NAME = "user"
 
-export const setUserCookie = (user: User) => {
-	setCookie(COOKIE_NAME, createJWT({ email: user.email }))
+export const setUserCookie = (res: NextApiResponse, user: User): void => {
+	if (!user) return
+
+	const { name, email } = user
+	const token = createJWT({ name, email })
+
+	setCookie(res, USER_COOKIE_NAME, token)
 }
 
-export const getUserFromCookie = (): User => {
-	const userCookie = Cookies.get(COOKIE_NAME)
+export const getUserFromCookie = async (
+	req: IncomingMessage & { cookies: NextApiRequestCookies }
+): Promise<User | undefined> => {
+	const { [USER_COOKIE_NAME]: token } = req.cookies
 
-	if (userCookie) {
-		return verifyJWT(userCookie, async (data) => {
-			const user = await prisma.user.findUnique({
-				where: { email: (data as any).email },
-			})
+	if (!token) return undefined
 
-			if (user) {
-				user.password = ""
-			}
+	try {
+		const data = verifyJWT(token)
 
-			return user
-		}) as User
+		if (!data) return undefined
+
+		const user = await prisma.user.findUnique({
+			where: { email: (data as any).email },
+		})
+
+		if (user) user.password = ""
+
+		return user
+	} catch (error) {
+		return undefined
 	}
-
-	return undefined
 }
 
-export const clearUserCookie = () => {
-	Cookies.remove(COOKIE_NAME)
+export const clearUserCookie = (res: NextApiResponse) => {
+	clearCookie(res, USER_COOKIE_NAME)
 }

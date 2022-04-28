@@ -24,6 +24,7 @@ model Album {
   songs       Song[]
   orders      AlbumsInOrders[]
   carts       AlbumsInCarts[]
+  isFeatured  Boolean          @default(false)
 }
 
 model Song {

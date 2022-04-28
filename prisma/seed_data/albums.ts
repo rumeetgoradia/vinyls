@@ -170,6 +170,7 @@ export const albums = [
 		producers: ["Clams Casino", "DropXLife", "Illangelo"],
 		totalLength: "45:45",
 		price: 49.99,
+		isFeatured: true,
 	},
 	{
 		id: "ckvzp3p0l0008oovmnmcjf6sm",
@@ -194,7 +195,7 @@ export const albums = [
 	{
 		id: "ckvzp3prz0009oovmno7grydi",
 		title: "Take Care",
-		artists: ["Drake "],
+		artists: ["Drake"],
 		coverArtUrl:
 			"https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Drake_-_Take_Care_cover.jpg/220px-Drake_-_Take_Care_cover.jpg",
 		year: 2011,
@@ -224,7 +225,7 @@ export const albums = [
 	{
 		id: "ckvzp3pzf000aoovmpp9uu2o4",
 		title: "Views",
-		artists: ["Drake "],
+		artists: ["Drake"],
 		coverArtUrl:
 			"https://upload.wikimedia.org/wikipedia/en/thumb/a/af/Drake_-_Views_cover.jpg/220px-Drake_-_Views_cover.jpg",
 		year: 2016,
@@ -244,11 +245,12 @@ export const albums = [
 		],
 		totalLength: "81:14",
 		price: 24.99,
+		isFeatured: true,
 	},
 	{
 		id: "ckvzp3q5w000boovmvd5biysb",
 		title: "Scorpion",
-		artists: ["Drake "],
+		artists: ["Drake"],
 		coverArtUrl:
 			"https://upload.wikimedia.org/wikipedia/en/thumb/9/90/Scorpion_by_Drake.jpg/220px-Scorpion_by_Drake.jpg",
 		year: 2018,
@@ -284,7 +286,7 @@ export const albums = [
 	{
 		id: "ckvzp3qb5000coovmlcid20dj",
 		title: "If You're Reading This It's Too Late",
-		artists: ["Drake "],
+		artists: ["Drake"],
 		coverArtUrl:
 			"https://upload.wikimedia.org/wikipedia/en/thumb/1/11/Drake_-_If_You%27re_Reading_This_It%27s_Too_Late.png/220px-Drake_-_If_You%27re_Reading_This_It%27s_Too_Late.png",
 		year: 2015,
@@ -307,7 +309,7 @@ export const albums = [
 	{
 		id: "ckvzp3qg5000doovm8w82x2xw",
 		title: "What a Time to Be Alive",
-		artists: ["Drake", "Future "],
+		artists: ["Drake", "Future"],
 		coverArtUrl:
 			"https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Drake_and_Future_-_What_a_Time_to_Be_Alive_cover.jpg/220px-Drake_and_Future_-_What_a_Time_to_Be_Alive_cover.jpg",
 		year: 2015,
@@ -362,6 +364,7 @@ export const albums = [
 		],
 		totalLength: "50:40",
 		price: 24.99,
+		isFeatured: true,
 	},
 	{
 		id: "ckvzp3rh4000foovme2iowpfg",
@@ -442,6 +445,7 @@ export const albums = [
 		],
 		totalLength: "60:08",
 		price: 24.99,
+		isFeatured: true,
 	},
 	{
 		id: "ckvzp3snt000ioovmq0jin3da",
@@ -2348,6 +2352,7 @@ export const albums = [
 		],
 		totalLength: "130:26",
 		price: 19.99,
+		isFeatured: true,
 	},
 	{
 		id: "ckvzp4i4l002yoovmv31cnnls",
@@ -2740,7 +2745,7 @@ export const albums = [
 		year: 2004,
 		genres: ["Crossover"],
 		labels: ["Roc-A-Fella", "Machine Shop", "Warner Bros.", "Def Jam"],
-		producers: ["Mike Shinoda", "Linkin Park", "Shawn Carter "],
+		producers: ["Mike Shinoda", "Linkin Park", "Shawn Carter"],
 		totalLength: "21:15",
 		price: 84.99,
 	},
@@ -3087,6 +3092,7 @@ export const albums = [
 		producers: ["Illmind", "J. Cole", "Phonix Beats", "Vinylz", "Willie B"],
 		totalLength: "64:39",
 		price: 39.99,
+		isFeatured: true,
 	},
 	{
 		id: "ckvzp4p37003woovm6ql9xq6t",
@@ -3784,7 +3790,7 @@ export const albums = [
 		year: 2013,
 		genres: ["Dubstep", "EDM", "drum and bass"],
 		labels: ["Warner Bros.", "Machine Shop"],
-		producers: ["Rick Rubin", "Mike Shinoda "],
+		producers: ["Rick Rubin", "Mike Shinoda"],
 		totalLength: "68:43",
 		price: 39.99,
 	},
@@ -5593,7 +5599,7 @@ export const albums = [
 	{
 		id: "ckvzp5e0u006toovm1tqec86o",
 		title: "Members Only, Vol. 3",
-		artists: ["Members Only "],
+		artists: ["Members Only"],
 		coverArtUrl:
 			"https://upload.wikimedia.org/wikipedia/en/thumb/e/e6/Members_Only%2C_Vol_3.png/220px-Members_Only%2C_Vol_3.png",
 		year: 2017,
@@ -5631,7 +5637,7 @@ export const albums = [
 	{
 		id: "ckvzp5e4m006uoovmsibtb6gl",
 		title: "Members Only, Vol. 4",
-		artists: ["Members Only "],
+		artists: ["Members Only"],
 		coverArtUrl:
 			"https://upload.wikimedia.org/wikipedia/en/thumb/1/10/Members_Only_Vol_4.jpg/220px-Members_Only_Vol_4.jpg",
 		year: 2019,
