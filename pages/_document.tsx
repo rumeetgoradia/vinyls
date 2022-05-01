@@ -8,11 +8,12 @@ class MyDocument extends Document {
 				<Head>
 					<link
 						rel="preload"
-						href="/fonts/~~.woff2"
+						href="/fonts/Inconsolata.woff2"
 						as="font"
 						type="font/woff2"
 						crossOrigin="anonymous"
 					/>
+
 					{/* Add favicon info */}
 				</Head>
 				<body>

@@ -54,6 +54,9 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
+  orders Order[]
+  cart   AlbumInCart[]
+
   @@map(name: "users")
 }
 
@@ -66,67 +69,60 @@ model VerificationToken {
   @@map("verificationtokens")
 }
 
-// model Album {
-//   id          String         @id @default(cuid())
-//   title       String
-//   artists     String[]
-//   coverArtUrl String
-//   year        Int
-//   genres      String[]
-//   labels      String[]
-//   producers   String[]
-//   totalLength String
-//   price       Float
-//   songs       Song[]
-//   orders      AlbumInOrder[]
-//   carts       AlbumInCart[]
-//   isFeatured  Boolean        @default(false)
-// }
+// Data
+model Album {
+  id             String         @id @default(cuid())
+  title          String
+  artists        String[]
+  coverArtUrl    String
+  coverArtBase64 String?
+  year           Int
+  genres         String[]
+  labels         String[]
+  producers      String[]
+  totalLength    String
+  price          Float
+  songs          Song[]
+  orders         AlbumInOrder[]
+  carts          AlbumInCart[]
+  isFeatured     Boolean        @default(false)
+}
 
-// model Song {
-//   id            String @id @default(cuid())
-//   title         String
-//   length        String
-//   numberOnAlbum Int
-//   album         Album  @relation(fields: [albumId], references: [id])
-//   albumId       String
-// }
+model Song {
+  id            String @id @default(cuid())
+  title         String
+  length        String
+  numberOnAlbum Int
+  album         Album  @relation(fields: [albumId], references: [id])
+  albumId       String
+}
 
-// model Order {
-//   id         Int            @id @default(autoincrement())
-//   datePlaced DateTime       @default(now())
-//   totalPrice Float
-//   user       User           @relation(fields: [userId], references: [id])
-//   userId     Int
-//   albums     AlbumInOrder[]
-// }
+model Order {
+  id         Int            @id @default(autoincrement())
+  datePlaced DateTime       @default(now())
+  totalPrice Float
+  user       User           @relation(fields: [userId], references: [id])
+  userId     String
+  albums     AlbumInOrder[]
+}
 
-// model User {
-//   id       Int           @id @default(autoincrement())
-//   name     String
-//   email    String        @unique
-//   password String
-//   orders   Order[]
-//   cart     AlbumInCart[]
-// }
+model AlbumInOrder {
+  order    Order    @relation(fields: [orderId], references: [id])
+  orderId  Int
+  album    Album    @relation(fields: [albumId], references: [id])
+  albumId  String
+  quantity Int      @default(1)
+  addedAt  DateTime @default(now())
 
-// model AlbumInOrder {
-//   order    Order    @relation(fields: [orderId], references: [id])
-//   orderId  Int
-//   album    Album    @relation(fields: [albumId], references: [id])
-//   albumId  String
-//   quantity Int      @default(1)
-//   addedAt  DateTime @default(now())
+  @@id([orderId, albumId])
+}
 
-//   @@id([orderId, albumId])
-// }
+model AlbumInCart {
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+  album    Album  @relation(fields: [albumId], references: [id])
+  albumId  String
+  quantity Int    @default(1)
 
-// model AlbumInCart {
-//   user     User   @relation(fields: [userId], references: [id])
-//   userId   Int
-//   album    Album  @relation(fields: [albumId], references: [id])
-//   albumId  String
-//   quantity Int    @default(1)
-
-//   @@id([userId, albumId])
-// }
+  @@id([userId, albumId])
+}

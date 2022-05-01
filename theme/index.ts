@@ -2,7 +2,8 @@ import { extendTheme } from "@chakra-ui/react"
 import { StyleFunctionProps } from "@chakra-ui/theme-tools"
 
 const fonts = [
-	"~~",
+	"Inconsolata",
+	"Courier New",
 	"ui-sans-serif",
 	"system-ui",
 	"-apple-system",

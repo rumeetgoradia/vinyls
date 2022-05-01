@@ -3,7 +3,7 @@
     "trailingSlash": false,
     "headers": [
       {
-        "source": "/fonts/~~.woff2",
+        "source": "/fonts/Inconsolata.woff2",
         "headers": [
           {
             "key": "Cache-Control",

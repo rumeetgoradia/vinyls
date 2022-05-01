@@ -1,2 +1,2 @@
 export * from "./albums"
-export * from "./seo"
+export * from "./songs"
