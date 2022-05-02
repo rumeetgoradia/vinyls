@@ -34,12 +34,14 @@
     "react-dom": "18.1.0",
     "react-hook-form": "^7.30.0",
     "react-icons": "^4.3.1",
+    "react-scroll": "^1.8.7",
     "redaxios": "^0.4.1",
     "sharp": "^0.30.4"
   },
   "devDependencies": {
     "@types/next-auth": "^3.15.0",
     "@types/react": "18.0.8",
+    "@types/react-scroll": "^1.8.3",
     "eslint": "8.14.0",
     "eslint-config-next": "12.1.5",
     "prisma": "^3.13.0",
