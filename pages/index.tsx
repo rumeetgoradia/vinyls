@@ -1,5 +1,6 @@
 import { Box, Container, Text, VStack } from "@chakra-ui/react"
 import { AlbumsGrid } from "@components/Home"
+import { SearchBar } from "@components/SearchBar"
 import { Album, PrismaClient } from "@prisma/client"
 import type { NextPage } from "next"
 import { useSession } from "next-auth/react"
@@ -47,7 +48,7 @@ const HomePage: NextPage<HomePageProps> = ({ albums }) => {
 					</Box>
 					Vinyls
 				</Text>
-				<Box>{/* TODO search bar */}</Box>
+				<SearchBar albums={albums} />
 				<AlbumsGrid albums={albums} />
 			</VStack>
 		</Container>

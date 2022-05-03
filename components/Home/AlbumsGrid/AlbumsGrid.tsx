@@ -177,6 +177,8 @@ const AlbumsGrid: React.FC<AlbumsGridProps> = ({ albums }) => {
 							<Box
 								role="group"
 								cursor="pointer"
+								_hover={{ transform: "scale(1.025)" }}
+								transition={createTransition("transform")}
 								onClick={() => {
 									pushToAlbumPage(id)
 								}}
@@ -194,8 +196,6 @@ const AlbumsGrid: React.FC<AlbumsGridProps> = ({ albums }) => {
 												src={coverArtUrl}
 												placeholder={coverArtBase64 ? "blur" : "empty"}
 												blurDataURL={coverArtBase64 || ""}
-												objectFit="cover"
-												objectPosition="center center"
 												alt={title}
 											/>
 										</Box>

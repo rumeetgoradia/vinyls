@@ -29,6 +29,32 @@ const theme = extendTheme({
 				bg: "white",
 				color: "black",
 			},
+			".with-scrollbar": {
+				"::-webkit-scrollbar-track": {
+					background: "white",
+				},
+				"::-webkit-scrollbar-thumb": {
+					background: "gray.200",
+					border: "4px solid rgba(0, 0, 0, 0)",
+					backgroundClip: "padding-box",
+					borderRadius: "9999px",
+				},
+				"::-webkit-scrollbar": {
+					width: "14px",
+				},
+			},
+			"::-webkit-scrollbar-track": {
+				background: "white",
+			},
+			"::-webkit-scrollbar-thumb": {
+				background: "gray.200",
+				border: "4px solid rgba(0, 0, 0, 0)",
+				backgroundClip: "padding-box",
+				borderRadius: "9999px",
+			},
+			"::-webkit-scrollbar": {
+				width: "14px",
+			},
 		}),
 	},
 	colors: {
