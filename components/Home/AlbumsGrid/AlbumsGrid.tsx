@@ -28,7 +28,7 @@ type AlbumsGridProps = {
 const AlbumsGrid: React.FC<AlbumsGridProps> = ({ albums }) => {
 	const resultsPerPageOptions = [12, 24, 36, 48]
 
-	const [resultsPerPage, setResultsPerPage] = useState<number>(12)
+	const [resultsPerPage, setResultsPerPage] = useState<number>(24)
 	const [activeSlice, setActiveSlice] = useState<number>(0)
 	const [numSlices, setNumSlices] = useState<number>(
 		Math.ceil(albums.length / resultsPerPage)
@@ -88,14 +88,14 @@ const AlbumsGrid: React.FC<AlbumsGridProps> = ({ albums }) => {
 		setNumSlices(Math.ceil(filteredAlbums.length / resultsPerPage))
 	}, [filteredAlbums, resultsPerPage])
 
-	useEffect(() => {
-		console.log("okay")
+	const scrollToTop = () => {
 		scroller.scrollTo("filters", {
 			smooth: true,
 			delay: 1,
 			duration: 0,
+			offset: -24,
 		})
-	}, [activeSlice])
+	}
 
 	const router = useRouter()
 
@@ -281,7 +281,10 @@ const AlbumsGrid: React.FC<AlbumsGridProps> = ({ albums }) => {
 				<Flex justify="center" align="center">
 					<IconButton
 						icon={<VscChevronLeft />}
-						onClick={() => setActiveSlice((prev) => prev - 1)}
+						onClick={() => {
+							setActiveSlice((prev) => prev - 1)
+							scrollToTop()
+						}}
 						aria-label="Previous Page"
 						disabled={activeSlice === 0}
 						variant="unstyled"
@@ -297,9 +300,10 @@ const AlbumsGrid: React.FC<AlbumsGridProps> = ({ albums }) => {
 					/>
 					<Select
 						value={activeSlice}
-						onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+						onChange={(e: ChangeEvent<HTMLSelectElement>) => {
 							setActiveSlice(parseInt(e.target.value))
-						}
+							scrollToTop()
+						}}
 						icon={<VscChevronDown />}
 						variant="unstyled"
 						w="auto"
@@ -312,7 +316,10 @@ const AlbumsGrid: React.FC<AlbumsGridProps> = ({ albums }) => {
 					</Select>
 					<IconButton
 						icon={<VscChevronRight />}
-						onClick={() => setActiveSlice((prev) => prev + 1)}
+						onClick={() => {
+							setActiveSlice((prev) => prev + 1)
+							scrollToTop()
+						}}
 						aria-label="Next Page"
 						disabled={activeSlice === numSlices - 1}
 						variant="unstyled"
