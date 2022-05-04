@@ -74,6 +74,7 @@ model Album {
   id             String         @id @default(cuid())
   title          String
   artists        String[]
+  description    String         @default("")
   coverArtUrl    String
   coverArtBase64 String?
   year           Int
