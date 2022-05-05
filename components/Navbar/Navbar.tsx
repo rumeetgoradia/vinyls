@@ -14,8 +14,9 @@ import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import { IoIosSearch } from "react-icons/io"
 import { IoCartOutline, IoLogInOutline, IoLogOutOutline } from "react-icons/io5"
-import { VscHistory } from "react-icons/vsc"
+import { VscAccount } from "react-icons/vsc"
 
 type NavbarProps = {}
 
@@ -30,8 +31,6 @@ const Navbar: React.FC<NavbarProps> = ({}) => {
 		const bodyScrollTop =
 			document.documentElement.scrollTop || document.body.scrollTop
 		const scrollThreshold = 82
-		// TODO remove
-		console.log(bodyScrollTop, scrollThreshold)
 		// @ts-ignore
 		setScrolled(bodyScrollTop >= scrollThreshold)
 	}
@@ -110,20 +109,35 @@ const Navbar: React.FC<NavbarProps> = ({}) => {
 					</Box>
 					<HStack spacing={0.5}>
 						{/* TODO add functionality */}
-						<IconButton
-							icon={<IoCartOutline />}
-							aria-label="Cart"
-							title="Cart"
-							{...buttonProps}
-						/>
+						<Link href="/cart" passHref>
+							<IconButton
+								as="a"
+								icon={<IoCartOutline />}
+								aria-label="Cart"
+								title="Cart"
+								{...buttonProps}
+							/>
+						</Link>
+						<Link href="/search" passHref>
+							<IconButton
+								as="a"
+								icon={<IoIosSearch />}
+								aria-label="Search"
+								title="Search"
+								{...buttonProps}
+							/>
+						</Link>
 						{session ? (
 							<>
-								<IconButton
-									icon={<VscHistory />}
-									aria-label="Orders"
-									title="Orders"
-									{...buttonProps}
-								/>
+								<Link href="/account" passHref>
+									<IconButton
+										as="a"
+										icon={<VscAccount />}
+										aria-label="Account"
+										title="Account"
+										{...buttonProps}
+									/>
+								</Link>
 								<IconButton
 									icon={<IoLogOutOutline />}
 									aria-label="Log Out"
@@ -132,12 +146,15 @@ const Navbar: React.FC<NavbarProps> = ({}) => {
 								/>
 							</>
 						) : (
-							<IconButton
-								icon={<IoLogInOutline />}
-								aria-label="Log In or Register"
-								title="Log In / Register"
-								{...buttonProps}
-							/>
+							<Link href="/login" passHref>
+								<IconButton
+									as="a"
+									icon={<IoLogInOutline />}
+									aria-label="Log In or Register"
+									title="Log In / Register"
+									{...buttonProps}
+								/>
+							</Link>
 						)}
 					</HStack>
 				</Flex>

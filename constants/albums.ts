@@ -30,11 +30,15 @@ export const ALBUM_FILTERS: AlbumFilters = {
 	],
 	genre: [
 		(album, filter) =>
+			album.genres.some((genre) => genre.toLowerCase() === filter),
+		(album, filter) =>
 			album.genres.some((genre) => genre.toLowerCase().startsWith(filter)),
 		(album, filter) =>
 			album.genres.some((genre) => genre.toLowerCase().includes(filter)),
 	],
 	producer: [
+		(album, filter) =>
+			album.producers.some((producer) => producer.toLowerCase() === filter),
 		(album, filter) =>
 			album.producers.some((producer) =>
 				producer.toLowerCase().startsWith(filter)
@@ -45,6 +49,8 @@ export const ALBUM_FILTERS: AlbumFilters = {
 			),
 	],
 	label: [
+		(album, filter) =>
+			album.labels.some((label) => label.toLowerCase() === filter),
 		(album, filter) =>
 			album.labels.some((label) => label.toLowerCase().startsWith(filter)),
 		(album, filter) =>

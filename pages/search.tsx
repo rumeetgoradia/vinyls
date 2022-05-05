@@ -1,10 +1,10 @@
-import { Text, VStack } from "@chakra-ui/react"
+import { Box, Flex, Spinner, Text, VStack } from "@chakra-ui/react"
 import { AlbumsGrid } from "@components/AlbumsGrid"
 import { Layout } from "@components/Layout"
 import { SearchBar } from "@components/SearchBar"
 import { AlbumFilterField, ALBUM_FILTER_FIELDS } from "@constants"
 import { Album, PrismaClient } from "@prisma/client"
-import { filterAlbums } from "@utils"
+import { createTransition, filterAlbums } from "@utils"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -34,20 +34,29 @@ const SearchPage: NextPage<SearchPageProps> = ({ albums }) => {
 	const [filterField, setFilterField] = useState<AlbumFilterField>()
 	const [filter, setFilter] = useState<string>()
 	const [isLoading, setLoading] = useState<boolean>(true)
+	const [isBadQuery, setIsBadQuery] = useState<boolean>(false)
 
-	const [filteredAlbums, setFilteredAlbums] = useState<Album[]>()
+	const [filteredAlbums, setFilteredAlbums] = useState<Album[]>([])
 
 	useEffect(() => {
-		if (!query && Object.keys(query).length === 0) {
-			setLoading(true)
-			return
-		}
+		const queryKeys = Object.keys(query)
 
-		for (const k of ALBUM_FILTER_FIELDS) {
-			if (query[k] !== undefined && query[k] !== null) {
-				setFilterField(k)
-				setFilter(query[k])
-				break
+		if (
+			queryKeys.length > 0 &&
+			// @ts-ignore
+			queryKeys.some((key) => !ALBUM_FILTER_FIELDS.includes(key.toLowerCase()))
+		) {
+			setIsBadQuery(true)
+		} else if (queryKeys.length === 0) {
+			setFilter(undefined)
+			setFilterField(undefined)
+		} else {
+			for (const k of ALBUM_FILTER_FIELDS) {
+				if (query[k] !== undefined && query[k] !== null) {
+					setFilterField(k)
+					setFilter(query[k])
+					break
+				}
 			}
 		}
 
@@ -57,39 +66,90 @@ const SearchPage: NextPage<SearchPageProps> = ({ albums }) => {
 	useEffect(() => {
 		if (!isLoading && filter && filterField) {
 			setFilteredAlbums(filterAlbums(albums, filter, filterField))
+		} else if (!isLoading) {
+			setFilteredAlbums([])
 		}
 	}, [isLoading, albums, filter, filterField])
 
 	const showResults = () => {
-		if (isLoading) {
-			return <Text>Loading...</Text>
-		} else if (!filter || !filterField) {
-			return <Text>Invalid search.</Text>
-		} else if (!filteredAlbums) {
-			return <Text>No results.</Text>
-		} else {
+		if (isBadQuery) {
+			return (
+				<Box>
+					<Text as="h2" color="gray.400" fontSize="2xl" mb={4}>
+						Invalid query!
+					</Text>
+					<Text as="h3" color="gray.400" fontSize="xl" lineHeight={1}>
+						Please use the search bar above to search through our inventory.
+					</Text>
+				</Box>
+			)
+		} else if (filter && filterField && filteredAlbums.length === 0) {
+			return (
+				<Box>
+					<Text as="h2" color="gray.400" fontSize="2xl" mb={4}>
+						No results found.
+					</Text>
+					<Text as="h3" color="gray.400" fontSize="xl" lineHeight={1}>
+						Please try searching again with another query!
+					</Text>
+				</Box>
+			)
+		} else if (filteredAlbums.length > 0) {
 			return <AlbumsGrid albums={filteredAlbums} />
 		}
 	}
 
 	return (
 		<Layout title="Search">
-			<VStack spacing={10}>
-				{/* <Text>
-					{filter} {filterField}
-				</Text> */}
-				<SearchBar albums={albums} filter={filter} filterField={filterField} />
-				{showResults()}
-				{/* {isLoading ? (
-					<Text>Loading...</Text>
-				) : !filter || !filterField ? (
-					<Text>Invalid search.</Text>
-				) : filteredAlbums && filteredAlbums.length ? (
-					<AlbumsGrid albums={filteredAlbums} />
-				) : (
-					<Text>No results</Text>
-				)} */}
-			</VStack>
+			<Flex
+				justify="center"
+				align="center"
+				position="absolute"
+				left={0}
+				top={0}
+				zIndex={100}
+				bg="white"
+				w="full"
+				h="full"
+				opacity={isLoading ? 1 : 0}
+				pointerEvents={isLoading ? "all" : "none"}
+				transition={createTransition("opacity", "ultra-slow", "ease-in-out")}
+			>
+				<Box transform="scale(2)">
+					<Spinner
+						thickness="1px"
+						speed="0.65s"
+						emptyColor="gray.200"
+						color="brand.900"
+						size="xl"
+						label="Search results loading"
+					/>
+				</Box>
+			</Flex>
+			{!isLoading && (
+				<VStack
+					spacing={10}
+					justify="flex-start"
+					align="flex-start"
+					position="relative"
+					zIndex={99}
+				>
+					<Text
+						as="h1"
+						fontWeight={300}
+						fontSize={{ base: "3xl", sm: "4xl", md: "5xl" }}
+						lineHeight={1.15}
+					>
+						Search{filter && filterField ? ` results for "${filter}"` : ""}
+					</Text>
+					<SearchBar
+						albums={albums}
+						filter={filter}
+						filterField={filterField}
+					/>
+					{showResults()}
+				</VStack>
+			)}
 		</Layout>
 	)
 }

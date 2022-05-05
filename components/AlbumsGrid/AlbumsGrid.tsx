@@ -114,51 +114,52 @@ const AlbumsGrid: React.FC<AlbumsGridProps> = ({ albums }) => {
 				// @ts-ignore
 				name="filters"
 			>
-				{letterFilters.map((letter) => {
-					const isActive = filter === letter
+				{letterFilters.length > 1 &&
+					letterFilters.map((letter) => {
+						const isActive = filter === letter
 
-					return (
-						<Button
-							key={`filter-${letter}`}
-							onClick={() => filterAlbums(letter)}
-							aria-label={`Albums starting with ${
-								letter === "#" ? "a non-alphabetic character" : letter
-							}`}
-							variant="unstyled"
-							position="relative"
-							fontWeight={400}
-							display="flex"
-							justifyContent="center"
-							alignItems="center"
-							mx={0.5}
-							p={1}
-							h="auto"
-							size="sm"
-							borderRadius={0}
-							color={isActive ? "brand.900" : "black"}
-							_hover={{ transform: `scale(${isActive ? 1 : 1.25})` }}
-							_focus={{}}
-							_after={{
-								content: '""',
-								w: isActive ? "90%" : 0,
-								h: "1px",
-								bg: "brand.900",
-								position: "absolute",
-								bottom: 0,
-								left: "50%",
-								transform: "translateX(-50%)",
-								transition: createTransition("width"),
-							}}
-							transition={createTransition([
-								"transform",
-								"color",
-								"background",
-							])}
-						>
-							{letter}
-						</Button>
-					)
-				})}
+						return (
+							<Button
+								key={`filter-${letter}`}
+								onClick={() => filterAlbums(letter)}
+								aria-label={`Albums starting with ${
+									letter === "#" ? "a non-alphabetic character" : letter
+								}`}
+								variant="unstyled"
+								position="relative"
+								fontWeight={400}
+								display="flex"
+								justifyContent="center"
+								alignItems="center"
+								mx={0.5}
+								p={1}
+								h="auto"
+								size="sm"
+								borderRadius={0}
+								color={isActive ? "brand.900" : "black"}
+								_hover={{ transform: `scale(${isActive ? 1 : 1.25})` }}
+								_focus={{}}
+								_after={{
+									content: '""',
+									w: isActive ? "90%" : 0,
+									h: "1px",
+									bg: "brand.900",
+									position: "absolute",
+									bottom: 0,
+									left: "50%",
+									transform: "translateX(-50%)",
+									transition: createTransition("width"),
+								}}
+								transition={createTransition([
+									"transform",
+									"color",
+									"background",
+								])}
+							>
+								{letter}
+							</Button>
+						)
+					})}
 			</Flex>
 			<Grid
 				gap={6}

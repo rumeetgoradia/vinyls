@@ -50,26 +50,23 @@ const SearchBar: React.FC<SearchBarProps> = ({
 	useEffect(() => {
 		if (passedFilter) {
 			setFilter(passedFilter)
+		} else {
+			setFilter("")
 		}
 	}, [passedFilter])
 
 	useEffect(() => {
 		if (passedFilterField) {
 			setFilterField(passedFilterField)
+		} else {
+			setFilterField("title")
 		}
 	}, [passedFilterField])
-
-	const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-		if (event.key === "Enter" && searchIsPossible()) {
-			setResultsOpen(false)
-			initiateSearch()
-		}
-	}
 
 	const [resultsOpen, setResultsOpen] = useState<boolean>(false)
 	const [isFocused, setFocused] = useState<boolean>(false)
 
-	const ref = useRef<HTMLDivElement>()
+	const ref = useRef<HTMLDivElement>(null)
 	useOutsideClick({
 		// @ts-ignore
 		ref: ref,
@@ -78,6 +75,20 @@ const SearchBar: React.FC<SearchBarProps> = ({
 			setResultsOpen(false)
 		},
 	})
+
+	const inputRef = useRef<HTMLInputElement>(null)
+
+	const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+		if (event.key === "Enter" || event.key === "Escape") {
+			inputRef.current?.blur()
+			setFocused(false)
+			setResultsOpen(false)
+
+			if (event.key === "Enter") {
+				initiateSearch()
+			}
+		}
+	}
 
 	const searchIsPossible = () => {
 		return filteredAlbums && filteredAlbums.length > 0
@@ -96,13 +107,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 	}
 
 	return (
-		<Box
-			w="full"
-			position="relative"
-			role="group"
-			// @ts-ignore
-			ref={ref}
-		>
+		<Box w="full" position="relative" role="group" ref={ref}>
 			<Box
 				position="absolute"
 				top="-1px"
@@ -158,6 +163,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 					<InputGroup size="lg">
 						<Input
 							value={filter}
+							ref={inputRef}
 							onKeyDown={handleKeyDown}
 							onChange={(e) => setFilter(e.target.value)}
 							onFocus={() => {
@@ -182,15 +188,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
 								title="Search"
 								bg="white"
 								borderRadius="0"
-								pointerEvents={isFocused || searchIsPossible() ? "all" : "none"}
-								color={isFocused || searchIsPossible() ? "black" : "gray.400"}
+								pointerEvents={isFocused || filter ? "all" : "none"}
+								color={isFocused || filter ? "black" : "gray.400"}
 								_hover={{
-									transform:
-										isFocused || searchIsPossible() ? "scale(1.1)" : "",
+									transform: isFocused || filter ? "scale(1.1)" : "",
 								}}
 								_active={{
-									transform:
-										isFocused || searchIsPossible() ? "scale(0.95)" : "",
+									transform: isFocused || filter ? "scale(0.95)" : "",
 								}}
 								_focus={{}}
 								transition={createTransition("transform")}
