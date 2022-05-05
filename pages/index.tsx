@@ -1,5 +1,5 @@
 import { Box, Link, Text, VStack } from "@chakra-ui/react"
-import { AlbumsGrid } from "@components/Home"
+import { AlbumsGrid } from "@components/AlbumsGrid"
 import { Layout } from "@components/Layout"
 import { SearchBar } from "@components/SearchBar"
 import { Album, PrismaClient } from "@prisma/client"

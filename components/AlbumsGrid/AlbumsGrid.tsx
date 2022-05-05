@@ -38,8 +38,8 @@ const AlbumsGrid: React.FC<AlbumsGridProps> = ({ albums }) => {
 	const [filteredAlbums, setFilteredAlbums] = useState<Album[]>(albums)
 	const [filter, setFilter] = useState<string>()
 
-	const filterAlbums = (letter: string) => {
-		if (filter === letter) {
+	const filterAlbums = (letter?: string) => {
+		if (!letter || filter === letter) {
 			setFilteredAlbums(albums)
 			setFilter(undefined)
 			return
@@ -81,6 +81,8 @@ const AlbumsGrid: React.FC<AlbumsGridProps> = ({ albums }) => {
 		}
 
 		setLetterFilters(newLetterFilters.sort())
+
+		filterAlbums()
 	}, [albums])
 
 	useEffect(() => {
@@ -107,8 +109,8 @@ const AlbumsGrid: React.FC<AlbumsGridProps> = ({ albums }) => {
 		<Box w="full">
 			<Flex
 				w="full"
-				justify={{ base: "center", lg: "space-between" }}
-				flexWrap={{ base: "wrap", lg: "nowrap" }}
+				justify="center"
+				flexWrap="wrap"
 				// @ts-ignore
 				name="filters"
 			>

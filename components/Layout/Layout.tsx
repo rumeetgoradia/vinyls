@@ -1,4 +1,4 @@
-import { Box, Container } from "@chakra-ui/react"
+import { Container } from "@chakra-ui/react"
 import { NextSeo } from "next-seo"
 
 type LayoutProps = {
@@ -16,7 +16,7 @@ const Layout: React.FC<LayoutProps> = ({ title, children }) => {
 				pb={8}
 				minH="calc(100vh - 37px)"
 			>
-				<Box w="full">{children}</Box>
+				{children}
 			</Container>
 		</>
 	)

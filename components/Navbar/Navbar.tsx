@@ -6,7 +6,6 @@ import {
 	HStack,
 	IconButton,
 	Text,
-	useBreakpointValue,
 	useTheme,
 } from "@chakra-ui/react"
 import { transparentize } from "@chakra-ui/theme-tools"
@@ -24,15 +23,15 @@ const Navbar: React.FC<NavbarProps> = ({}) => {
 	const { data: session } = useSession()
 
 	const [isScrolled, setScrolled] = useState<boolean>()
-	const scrollThreshold = useBreakpointValue({ base: 82, sm: 111 })
 
 	const router = useRouter()
 
 	const handleScroll = () => {
 		const bodyScrollTop =
 			document.documentElement.scrollTop || document.body.scrollTop
+		const scrollThreshold = 82
 		// TODO remove
-		console.log(bodyScrollTop)
+		console.log(bodyScrollTop, scrollThreshold)
 		// @ts-ignore
 		setScrolled(bodyScrollTop >= scrollThreshold)
 	}
