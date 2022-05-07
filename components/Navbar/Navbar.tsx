@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react"
 import { transparentize } from "@chakra-ui/theme-tools"
 import { createTransition } from "@utils"
-import { useSession } from "next-auth/react"
+import { signIn, signOut, useSession } from "next-auth/react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -31,7 +31,6 @@ const Navbar: React.FC<NavbarProps> = ({}) => {
 		const bodyScrollTop =
 			document.documentElement.scrollTop || document.body.scrollTop
 		const scrollThreshold = 82
-		// @ts-ignore
 		setScrolled(bodyScrollTop >= scrollThreshold)
 	}
 
@@ -140,21 +139,20 @@ const Navbar: React.FC<NavbarProps> = ({}) => {
 								</Link>
 								<IconButton
 									icon={<IoLogOutOutline />}
-									aria-label="Log Out"
-									title="Log Out"
+									onClick={() => signOut()}
+									aria-label="Sign Out"
+									title="Sign Out"
 									{...buttonProps}
 								/>
 							</>
 						) : (
-							<Link href="/login" passHref>
-								<IconButton
-									as="a"
-									icon={<IoLogInOutline />}
-									aria-label="Log In or Register"
-									title="Log In / Register"
-									{...buttonProps}
-								/>
-							</Link>
+							<IconButton
+								onClick={() => signIn()}
+								icon={<IoLogInOutline />}
+								aria-label="Sign In or Register"
+								title="Sign In / Register"
+								{...buttonProps}
+							/>
 						)}
 					</HStack>
 				</Flex>

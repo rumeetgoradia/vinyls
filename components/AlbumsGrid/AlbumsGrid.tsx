@@ -211,27 +211,16 @@ const AlbumsGrid: React.FC<AlbumsGridProps> = ({ albums }) => {
 											title={`Add ${title} to Cart`}
 											variant="ghost"
 											size="sm"
-											lineHeight={1}
-											textTransform="uppercase"
-											letterSpacing={1}
 											position="absolute"
 											zIndex={2}
 											left="50%"
 											top="50%"
 											transform="translate(-50%, -50%)"
-											borderRadius={0}
-											bg="brand.900"
-											color="white"
 											opacity={0}
-											px={4}
 											pointerEvents="none"
-											_hover={{
-												background: "brand.800",
-											}}
 											_active={{
 												transform: "translate(-50%, -50%) scale(0.975)",
 											}}
-											_focus={{}}
 											_groupHover={{
 												opacity: 1,
 												pointerEvents: "all",

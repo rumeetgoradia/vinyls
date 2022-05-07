@@ -1,5 +1,6 @@
 import { extendTheme } from "@chakra-ui/react"
 import { StyleFunctionProps } from "@chakra-ui/theme-tools"
+import { components } from "./components"
 
 const fonts = [
 	"Inconsolata",
@@ -75,6 +76,7 @@ const theme = extendTheme({
 		heading: fonts,
 		body: fonts,
 	},
+	components,
 	config: {
 		initialColorMode: "light",
 		useSystemColorMode: false,

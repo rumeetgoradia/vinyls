@@ -4,7 +4,6 @@ import { Layout } from "@components/Layout"
 import { SearchBar } from "@components/SearchBar"
 import { Album, PrismaClient } from "@prisma/client"
 import type { NextPage } from "next"
-import { useSession } from "next-auth/react"
 
 export async function getStaticProps() {
 	const prisma = new PrismaClient()
@@ -22,15 +21,8 @@ type HomePageProps = {
 }
 
 const HomePage: NextPage<HomePageProps> = ({ albums }) => {
-	const { data: session, status } = useSession()
-
-	if (status === "authenticated") {
-		return <p>Signed in as {session?.user?.email}</p>
-	}
-
 	return (
 		<Layout>
-			{/* <a href="/api/auth/signin">Sign in</a> */}
 			<VStack spacing={10}>
 				<Text
 					as="h1"
