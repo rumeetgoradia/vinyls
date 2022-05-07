@@ -10,22 +10,17 @@ import {
 } from "@chakra-ui/react"
 import { transparentize } from "@chakra-ui/theme-tools"
 import { createTransition } from "@utils"
-import { signIn, signOut, useSession } from "next-auth/react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { IoIosSearch } from "react-icons/io"
-import { IoCartOutline, IoLogInOutline, IoLogOutOutline } from "react-icons/io5"
-import { VscAccount } from "react-icons/vsc"
+import { IoCartOutline } from "react-icons/io5"
+import { AccountPopover } from "./AccountPopover"
 
 type NavbarProps = {}
 
 const Navbar: React.FC<NavbarProps> = ({}) => {
-	const { data: session } = useSession()
-
 	const [isScrolled, setScrolled] = useState<boolean>()
-
-	const router = useRouter()
 
 	const handleScroll = () => {
 		const bodyScrollTop =
@@ -40,6 +35,8 @@ const Navbar: React.FC<NavbarProps> = ({}) => {
 
 		return () => window.removeEventListener("scroll", handleScroll)
 	}, [])
+
+	const router = useRouter()
 
 	const theme = useTheme()
 
@@ -126,34 +123,7 @@ const Navbar: React.FC<NavbarProps> = ({}) => {
 								{...buttonProps}
 							/>
 						</Link>
-						{session ? (
-							<>
-								<Link href="/account" passHref>
-									<IconButton
-										as="a"
-										icon={<VscAccount />}
-										aria-label="Account"
-										title="Account"
-										{...buttonProps}
-									/>
-								</Link>
-								<IconButton
-									icon={<IoLogOutOutline />}
-									onClick={() => signOut()}
-									aria-label="Sign Out"
-									title="Sign Out"
-									{...buttonProps}
-								/>
-							</>
-						) : (
-							<IconButton
-								onClick={() => signIn()}
-								icon={<IoLogInOutline />}
-								aria-label="Sign In or Register"
-								title="Sign In / Register"
-								{...buttonProps}
-							/>
-						)}
+						<AccountPopover buttonProps={buttonProps} />
 					</HStack>
 				</Flex>
 			</Container>

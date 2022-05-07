@@ -17,6 +17,30 @@ export const Button = {
 			_focus: { outline: "none", boxShadow: "none" },
 			transition: createTransition(["transform", "background"]),
 		},
+		outline: {
+			fontWeight: 350,
+			bg: "white",
+			color: "black",
+			borderColor: "black",
+			_hover: {
+				bg: "white",
+				borderColor: "brand.900",
+				color: "brand.900",
+			},
+			_active: {
+				bg: "white",
+				borderColor: "brand.900",
+				color: "brand.900",
+				transform: "scale(0.975)",
+			},
+			_focus: { outline: "none", boxShadow: "none" },
+			transition: createTransition([
+				"transform",
+				"background",
+				"border-color",
+				"color",
+			]),
+		},
 	},
 	sizes: {
 		sm: {

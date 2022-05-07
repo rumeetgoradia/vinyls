@@ -203,7 +203,7 @@ const AlbumsGrid: React.FC<AlbumsGridProps> = ({ albums }) => {
 											/>
 										</Box>
 										<Button
-											rightIcon={<IoCartOutline />}
+											leftIcon={<IoCartOutline />}
 											onClick={(e) => {
 												e.stopPropagation()
 												// TODO add to cart functionality
