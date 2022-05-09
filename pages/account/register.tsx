@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	}
 }
 
-type SignInPageProps = {
+type RegisterPageProps = {
 	providers: Record<
 		LiteralUnion<BuiltInProviderType, string>,
 		ClientSafeProvider
@@ -41,13 +41,13 @@ type SignInPageProps = {
 	error?: string
 }
 
-const SignInPage: NextPage<SignInPageProps> = ({
+const RegisterPage: NextPage<RegisterPageProps> = ({
 	callbackUrl,
 	error,
 	providers,
 }) => {
 	return (
-		<Layout title="Sign In">
+		<Layout title="Create Account">
 			<VStack spacing={10} align="flex-start">
 				<Text
 					as="h1"
@@ -55,7 +55,7 @@ const SignInPage: NextPage<SignInPageProps> = ({
 					fontSize={{ base: "4xl", md: "5xl" }}
 					lineHeight={1.15}
 				>
-					Sign In
+					Create Account
 				</Text>
 				<SignInForm
 					providers={providers}
@@ -63,17 +63,17 @@ const SignInPage: NextPage<SignInPageProps> = ({
 					error={error}
 				/>
 				<Flex align="center" w="full" direction="row">
-					<Text mr={2}>New user?</Text>
-					<NextLink href="/account/register" passHref>
+					<Text mr={2}>Already have an account?</Text>
+					<NextLink href="/account/signin" passHref>
 						<Flex
 							as="a"
-							title="Create Account"
+							title="Sign In"
 							color="brand.900"
 							align="center"
 							role="group"
 							_focus={{}}
 						>
-							Create an account{" "}
+							Sign in{" "}
 							<Box
 								ml={2}
 								transition={createTransition("margin")}
@@ -91,4 +91,4 @@ const SignInPage: NextPage<SignInPageProps> = ({
 	)
 }
 
-export default SignInPage
+export default RegisterPage

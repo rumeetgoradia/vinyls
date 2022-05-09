@@ -5,33 +5,34 @@ export const Button = {
 		borderRadius: 0,
 		lineHeight: 1,
 		letterSpacing: 1,
+		_active: {
+			transform: "scale(0.975)",
+		},
 	},
 	variants: {
 		ghost: {
 			bg: "brand.900",
 			color: "white",
 			_hover: {
-				bg: "brand.800",
+				bg: "brand.700",
 			},
-			_active: { bg: "brand.800", transform: "scale(0.975)" },
+			_active: { bg: "brand.700" },
 			_focus: { outline: "none", boxShadow: "none" },
 			transition: createTransition(["transform", "background"]),
 		},
 		outline: {
-			fontWeight: 350,
 			bg: "white",
-			color: "black",
-			borderColor: "black",
+			color: "brand.900",
+			borderColor: "brand.900",
 			_hover: {
-				bg: "white",
+				bg: "brand.50",
 				borderColor: "brand.900",
 				color: "brand.900",
 			},
 			_active: {
-				bg: "white",
+				bg: "brand.50",
 				borderColor: "brand.900",
 				color: "brand.900",
-				transform: "scale(0.975)",
 			},
 			_focus: { outline: "none", boxShadow: "none" },
 			transition: createTransition([

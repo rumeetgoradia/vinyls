@@ -21,13 +21,13 @@ const ProviderButton: React.FC<ProviderButtonProps> = ({
 			w="full"
 			bg={baseColor || "brand.900"}
 			_hover={{
-				bg: hoverColor || "brand.800",
+				bg: hoverColor || "brand.700",
 				_disabled: {
 					bg: baseColor || "brand.900",
 				},
 			}}
 			_active={{
-				bg: hoverColor || "brand.800",
+				bg: hoverColor || "brand.700",
 				transform: "scale(0.975)",
 				_disabled: {
 					bg: baseColor || "brand.900",

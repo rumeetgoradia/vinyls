@@ -3,6 +3,7 @@ import {
 	Flex,
 	Grid,
 	GridItem,
+	Link,
 	Spacer,
 	Stack,
 	Text,
@@ -13,6 +14,7 @@ import { Layout } from "@components/Layout"
 import { Album, PrismaClient, Song } from "@prisma/client"
 import { GetStaticPaths, GetStaticProps, NextPage } from "next"
 import Image from "next/image"
+import NextLink from "next/link"
 
 export const getStaticPaths: GetStaticPaths = async () => {
 	const prisma = new PrismaClient()
@@ -105,18 +107,51 @@ const AlbumPage: NextPage<AlbumPageProps> = ({
 						<Text as="h1" fontSize="4xl" mb={4}>
 							{title}
 						</Text>
-						<Text
-							as="h4"
-							fontSize="xl"
-							color="gray.500"
-							fontWeight={300}
-							mb={4}
-						>
-							{year}
-						</Text>
-						<Text as="h2" fontSize="3xl" fontWeight={300} mb={4}>
-							{artists.join(", ")}
-						</Text>
+						<Box mb={4}>
+							<NextLink
+								href={{
+									pathname: "/search",
+									query: {
+										year,
+									},
+								}}
+								passHref
+							>
+								<Link
+									title={`Search for albums from ${year}`}
+									display="inline-block"
+									fontSize="xl"
+									color="gray.500"
+									fontWeight={300}
+									_hover={{ color: "brand.900" }}
+								>
+									{year}
+								</Link>
+							</NextLink>
+						</Box>
+						<Box as="h2" fontSize="3xl" fontWeight={300} mb={4}>
+							{artists.map((artist, index) => (
+								<Box as="span" key={`${title}-${artist}`}>
+									{index !== 0 && ","}
+									<NextLink
+										href={{
+											pathname: "/search",
+											query: {
+												artist,
+											},
+										}}
+										passHref
+									>
+										<Link
+											title={`Search for albums by ${artist}`}
+											_hover={{ color: "brand.900" }}
+										>
+											{artist}
+										</Link>
+									</NextLink>
+								</Box>
+							))}
+						</Box>
 						<Text as="h3" fontSize="2xl" mb={8}>
 							${price}
 						</Text>
@@ -148,18 +183,9 @@ const AlbumPage: NextPage<AlbumPageProps> = ({
 							justify="space-between"
 							spacing={4}
 						>
-							<AlbumDetails
-								title={`Genre${genres.length > 1 ? "s" : ""}`}
-								details={genres}
-							/>
-							<AlbumDetails
-								title={`Producer${producers.length > 1 ? "s" : ""}`}
-								details={producers}
-							/>
-							<AlbumDetails
-								title={`Label${labels.length > 1 ? "s" : ""}`}
-								details={labels}
-							/>
+							<AlbumDetails title="genre" details={genres} />
+							<AlbumDetails title="producer" details={producers} />
+							<AlbumDetails title="label" details={labels} />
 						</Stack>
 					</Box>
 				</GridItem>
