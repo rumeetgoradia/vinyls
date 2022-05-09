@@ -8,12 +8,10 @@ import {
 	Select,
 	Text,
 } from "@chakra-ui/react"
+import { AlbumPreview } from "@components/AlbumPreview"
 import { Album } from "@prisma/client"
 import { createTransition } from "@utils"
-import Image from "next/image"
-import { useRouter } from "next/router"
 import { ChangeEvent, useEffect, useState } from "react"
-import { IoCartOutline } from "react-icons/io5"
 import {
 	VscChevronDown,
 	VscChevronLeft,
@@ -99,12 +97,6 @@ const AlbumsGrid: React.FC<AlbumsGridProps> = ({ albums }) => {
 		})
 	}
 
-	const router = useRouter()
-
-	const pushToAlbumPage = (id: string) => {
-		router.push(`/albums/${id}`)
-	}
-
 	return (
 		<Box w="full">
 			<Flex
@@ -175,76 +167,9 @@ const AlbumsGrid: React.FC<AlbumsGridProps> = ({ albums }) => {
 						activeSlice * resultsPerPage,
 						Math.min((activeSlice + 1) * resultsPerPage, filteredAlbums.length)
 					)
-					.map(({ title, artists, price, id, coverArtUrl, coverArtBase64 }) => (
-						<GridItem colSpan={1} key={title}>
-							<Box
-								role="group"
-								cursor="pointer"
-								_hover={{ transform: "scale(1.025)" }}
-								transition={createTransition("transform")}
-								onClick={() => {
-									pushToAlbumPage(id)
-								}}
-							>
-								<Box>
-									<Box bg="black" position="relative" zIndex={1}>
-										<Box
-											transition={createTransition("opacity")}
-											_groupHover={{ opacity: 0.5 }}
-										>
-											<Image
-												layout="responsive"
-												width={500}
-												height={500}
-												src={coverArtUrl}
-												placeholder={coverArtBase64 ? "blur" : "empty"}
-												blurDataURL={coverArtBase64 || ""}
-												alt={title}
-											/>
-										</Box>
-										<Button
-											leftIcon={<IoCartOutline />}
-											onClick={(e) => {
-												e.stopPropagation()
-												// TODO add to cart functionality
-											}}
-											title={`Add ${title} to Cart`}
-											variant="ghost"
-											size="sm"
-											position="absolute"
-											zIndex={2}
-											left="50%"
-											top="50%"
-											transform="translate(-50%, -50%)"
-											opacity={0}
-											pointerEvents="none"
-											_active={{
-												transform: "translate(-50%, -50%) scale(0.975)",
-											}}
-											_groupHover={{
-												opacity: 1,
-												pointerEvents: "all",
-											}}
-											transition={createTransition([
-												"opacity",
-												"transform",
-												"background",
-											])}
-										>
-											Quick Add
-										</Button>
-									</Box>
-									<Text fontWeight={500} lineHeight={1.15} my={1}>
-										{title}
-									</Text>
-									<Text fontSize="sm" lineHeight={1.15} mb={1}>
-										{artists.join(", ")}
-									</Text>
-									<Text fontSize="xs" lineHeight={1}>
-										${price}
-									</Text>
-								</Box>
-							</Box>
+					.map((album) => (
+						<GridItem colSpan={1} key={`preview-${album.title}`}>
+							<AlbumPreview album={album} />
 						</GridItem>
 					))}
 			</Grid>

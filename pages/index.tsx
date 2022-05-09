@@ -2,11 +2,11 @@ import { Box, Link, Text, VStack } from "@chakra-ui/react"
 import { AlbumsGrid } from "@components/AlbumsGrid"
 import { Layout } from "@components/Layout"
 import { SearchBar } from "@components/SearchBar"
-import { Album, PrismaClient } from "@prisma/client"
+import prisma from "@lib/prisma"
+import { Album } from "@prisma/client"
 import type { NextPage } from "next"
 
 export async function getStaticProps() {
-	const prisma = new PrismaClient()
 	const albums = await prisma.album.findMany({
 		orderBy: [{ title: "asc" }],
 	})

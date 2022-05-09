@@ -11,13 +11,13 @@ import {
 import { AddToCart, TrackList } from "@components/AlbumPage"
 import { AlbumDetails } from "@components/AlbumPage/AlbumDetails"
 import { Layout } from "@components/Layout"
-import { Album, PrismaClient, Song } from "@prisma/client"
+import prisma from "@lib/prisma"
+import { Album, Song } from "@prisma/client"
 import { GetStaticPaths, GetStaticProps, NextPage } from "next"
 import Image from "next/image"
 import NextLink from "next/link"
 
 export const getStaticPaths: GetStaticPaths = async () => {
-	const prisma = new PrismaClient()
 	const albums = await prisma.album.findMany()
 
 	const paths = albums.map((album) => {
@@ -35,7 +35,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-	const prisma = new PrismaClient()
 	const album = await prisma.album.findUnique({
 		where: {
 			// @ts-ignore

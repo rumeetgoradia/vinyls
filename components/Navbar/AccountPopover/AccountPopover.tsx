@@ -52,6 +52,7 @@ const AccountPopover: React.FC<AccountPopoverProps> = ({ buttonProps }) => {
 	return (
 		<Popover
 			placement="bottom-end"
+			arrowShadowColor={isLoggedIn ? "none" : "var(--chakra-colors-gray-400)"}
 			returnFocusOnClose={false}
 			isOpen={popoverIsOpen}
 			onClose={closePopover}
@@ -69,6 +70,7 @@ const AccountPopover: React.FC<AccountPopoverProps> = ({ buttonProps }) => {
 			<PopoverContent
 				borderRadius="0"
 				border={isLoggedIn ? "none" : "1px"}
+				borderColor="gray.400"
 				boxShadow="none"
 				_focus={{}}
 			>
@@ -82,7 +84,7 @@ const AccountPopover: React.FC<AccountPopoverProps> = ({ buttonProps }) => {
 				)}
 				<PopoverBody
 					border={isLoggedIn ? "1px" : "none"}
-					borderColor="gray.200"
+					borderColor="gray.400"
 					borderTop="none"
 					boxShadow="none"
 					p={0}

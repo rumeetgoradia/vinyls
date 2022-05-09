@@ -20,11 +20,17 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
+      "@cart": [
+        "cart/index.tsx"
+      ],
       "@components/*": [
         "components/*"
       ],
       "@constants": [
         "constants/index.ts"
+      ],
+      "@lib/*": [
+        "lib/*"
       ],
       "@images/*": [
         "public/images/*"

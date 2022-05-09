@@ -1,6 +1,6 @@
+import prisma from "@lib/prisma"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { verify } from "@node-rs/bcrypt"
-import { PrismaClient } from "@prisma/client"
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import FacebookProvider from "next-auth/providers/facebook"
@@ -13,8 +13,6 @@ declare module "next-auth" {
 		password?: string
 	}
 }
-
-const prisma = new PrismaClient()
 
 export default NextAuth({
 	providers: [

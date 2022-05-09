@@ -3,14 +3,14 @@ import { AlbumsGrid } from "@components/AlbumsGrid"
 import { Layout } from "@components/Layout"
 import { SearchBar } from "@components/SearchBar"
 import { AlbumFilterField, ALBUM_FILTER_FIELDS } from "@constants"
-import { Album, PrismaClient } from "@prisma/client"
+import prisma from "@lib/prisma"
+import { Album } from "@prisma/client"
 import { createTransition, filterAlbums } from "@utils"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 
 export async function getStaticProps() {
-	const prisma = new PrismaClient()
 	const albums = await prisma.album.findMany({
 		orderBy: [{ title: "asc" }],
 	})

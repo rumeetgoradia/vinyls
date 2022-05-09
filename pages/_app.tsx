@@ -1,3 +1,4 @@
+import { CartContextProvider } from "@cart"
 import { Chakra } from "@components/Chakra"
 import { Footer } from "@components/Footer"
 import { Navbar } from "@components/Navbar"
@@ -11,12 +12,14 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<SessionProvider session={pageProps.session}>
 			<DefaultSeo {...SeoProps} />
-			<Chakra cookies={pageProps.cookies} theme={theme}>
-				<Fonts />
-				<Navbar />
-				<Component {...pageProps} />
-				<Footer />
-			</Chakra>
+			<CartContextProvider>
+				<Chakra cookies={pageProps.cookies} theme={theme}>
+					<Fonts />
+					<Navbar />
+					<Component {...pageProps} />
+					<Footer />
+				</Chakra>
+			</CartContextProvider>
 		</SessionProvider>
 	)
 }
