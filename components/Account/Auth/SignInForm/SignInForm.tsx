@@ -21,7 +21,7 @@ import {
 import { BuiltInProviderType } from "next-auth/providers"
 import { signIn } from "next-auth/react"
 import { ClientSafeProvider, LiteralUnion } from "next-auth/react/types"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { BiErrorCircle } from "react-icons/bi"
 import { Or } from "../Or"
 import { ProviderButton } from "../ProviderButton"
@@ -44,6 +44,7 @@ const SignInForm: React.FC<SignInFormProps> = ({
 		register,
 		formState: { errors, isSubmitting },
 		handleSubmit,
+		control,
 	} = useForm<SignInCredentials>()
 
 	const orVariant = useBreakpointValue<"horizontal" | "vertical">({
@@ -99,18 +100,20 @@ const SignInForm: React.FC<SignInFormProps> = ({
 							</FormControl>
 						</GridItem>
 						<GridItem colSpan={2}>
-							<FormControl isInvalid={!!errors.password}>
-								<FormLabel mb={1}>Password</FormLabel>
-								<PasswordField
-									{...register("password", {
-										required: "Please enter your password.",
-									})}
-									outline="variant"
-								/>
-								<FormErrorMessage color="red.600">
-									{errors.password?.message}
-								</FormErrorMessage>
-							</FormControl>
+							<Controller
+								control={control}
+								name="password"
+								rules={{ required: "Please enter your password." }}
+								render={({ field }) => (
+									<FormControl isInvalid={!!errors.password}>
+										<FormLabel mb={1}>Password</FormLabel>
+										<PasswordField {...field} outline="variant" />
+										<FormErrorMessage color="red.600">
+											{errors.password?.message}
+										</FormErrorMessage>
+									</FormControl>
+								)}
+							/>
 						</GridItem>
 						<GridItem colSpan={2}>
 							<Button

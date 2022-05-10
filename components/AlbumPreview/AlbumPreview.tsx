@@ -11,9 +11,9 @@ type AlbumPreviewProps = {
 	album: Album
 }
 
-const AlbumPreview: React.FC<AlbumPreviewProps> = ({ album }) => {
-	const { id, coverArtBase64, coverArtUrl, title, artists, price } = album
-
+const AlbumPreview: React.FC<AlbumPreviewProps> = ({
+	album: { id, coverArtBase64, coverArtUrl, title, artists, price },
+}) => {
 	const { addAlbumToCart } = useContext<CartContextValues>(CartContext)
 
 	const router = useRouter()
@@ -51,8 +51,7 @@ const AlbumPreview: React.FC<AlbumPreviewProps> = ({ album }) => {
 						leftIcon={<IoCartOutline />}
 						onClick={(e) => {
 							e.stopPropagation()
-							console.log("adding", album.title)
-							addAlbumToCart(album, 1)
+							addAlbumToCart(id, 1)
 						}}
 						title={`Add ${title} to Cart`}
 						variant="ghost"

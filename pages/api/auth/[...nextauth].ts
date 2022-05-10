@@ -67,11 +67,6 @@ export default NextAuth({
 		}),
 	],
 	adapter: PrismaAdapter(prisma),
-	callbacks: {
-		async signIn({ user, account, profile, email, credentials }) {
-			return true
-		},
-	},
 	session: {
 		// Set to jwt in order to CredentialsProvider works properly
 		strategy: "jwt",

@@ -9,7 +9,7 @@ import { createTransition } from "@utils"
 import { useState } from "react"
 import { BiHide, BiShow } from "react-icons/bi"
 
-const PasswordField: React.FC<InputProps> = ({ ...props }) => {
+const PasswordField: React.FC<InputProps> = (props) => {
 	const [passwordIsShowing, setPasswordIsShowing] = useState<boolean>(false)
 
 	return (
