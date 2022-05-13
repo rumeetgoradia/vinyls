@@ -58,3 +58,7 @@ export const ALBUM_FILTERS: AlbumFilters = {
 	],
 	year: [(album, filter) => album.year === parseInt(filter)],
 }
+
+export interface DetailedAlbumInCart extends Album {
+	quantity: number
+}

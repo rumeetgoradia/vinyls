@@ -1,16 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { AlbumInCart } from "@prisma/client"
 import { useSession } from "next-auth/react"
 import { createContext, useEffect, useState } from "react"
 import redaxios from "redaxios"
 
-// User not signed in --> add items to cart, push to cookie
-// User signs in --> all items in cart gets pushed to user cart, cart cookie cleared
-// User signs out --> cart context item cleared
 export interface CartContextValues {
 	cart: AlbumInCart[]
 	getTotalSizeOfCart: () => number
 	addAlbumToCart: (albumId: string, quantity?: number) => void
 	removeAlbumFromCart: (albumId: string, quantity?: number) => void
+	setQuantityOfAlbumInCart: (albumId: string, quantity: number) => void
 }
 
 const defaultContext: CartContextValues = {
@@ -18,6 +17,7 @@ const defaultContext: CartContextValues = {
 	getTotalSizeOfCart: () => 0,
 	addAlbumToCart: () => {},
 	removeAlbumFromCart: () => {},
+	setQuantityOfAlbumInCart: () => {},
 }
 
 export const CartContext = createContext<CartContextValues>(defaultContext)
@@ -160,6 +160,41 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
 		}
 	}
 
+	const setQuantityOfAlbumInCart = (
+		albumId: string,
+		quantity: number,
+		persist: boolean = true
+	) => {
+		const existingAlbumInCart = getAlbumInCartById(albumId)
+
+		if (existingAlbumInCart && quantity < 1) {
+			setCart((prev) => {
+				const newCart = prev.filter(
+					(albumInCart) => albumInCart.albumId !== albumId
+				)
+				if (persist) {
+					persistCart(newCart)
+				}
+				return newCart
+			})
+		} else if (existingAlbumInCart) {
+			const newAlbumInCart = { ...existingAlbumInCart, quantity }
+			setCart((prev) => {
+				const newCart = prev.find(
+					(albumInCart) => albumInCart.albumId === albumId
+				)
+					? prev.map((albumInCart) =>
+							albumInCart.albumId === albumId ? newAlbumInCart : albumInCart
+					  )
+					: [...prev, newAlbumInCart]
+				if (persist) {
+					persistCart(newCart)
+				}
+				return newCart
+			})
+		}
+	}
+
 	const persistCart = (cart: AlbumInCart[] = []) => {
 		console.log("persisting", isLoggedIn(), cart)
 		if (isLoggedIn()) {
@@ -173,7 +208,13 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	return (
 		<CartContext.Provider
-			value={{ cart, getTotalSizeOfCart, addAlbumToCart, removeAlbumFromCart }}
+			value={{
+				cart,
+				getTotalSizeOfCart,
+				addAlbumToCart,
+				removeAlbumFromCart,
+				setQuantityOfAlbumInCart,
+			}}
 		>
 			{children}
 		</CartContext.Provider>

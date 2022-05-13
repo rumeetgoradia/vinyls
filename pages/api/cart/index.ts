@@ -2,7 +2,7 @@ import prisma from "@lib/prisma"
 import { AlbumInCart } from "@prisma/client"
 import { NextApiRequest, NextApiResponse } from "next"
 import { getSession } from "next-auth/react"
-import defaultHandler from "./_defaultHandler"
+import defaultHandler from "../_defaultHandler"
 
 type ResponseData = {
 	albumsInCart?: AlbumInCart[]
@@ -35,15 +35,37 @@ const handler = defaultHandler<NextApiRequest, NextApiResponse<ResponseData>>()
 			return
 		}
 
-		const cart: AlbumInCart[] = JSON.parse(req.body)
-
 		const user = await prisma.user.findUnique({ where: { email } })
 		if (!user) {
 			res.status(401).send({ error: "Not signed in." })
 			return
 		}
 
-		for (const albumInCart of cart) {
+		const newCart: AlbumInCart[] = JSON.parse(req.body)
+		const userCart = await prisma.albumInCart.findMany({
+			where: { userId: user.id },
+		})
+
+		// Delete absent records
+		for (const albumInCart of userCart) {
+			const albumInNewCart = newCart.find(
+				(aic) => aic.albumId === albumInCart.albumId
+			)
+
+			if (!albumInNewCart) {
+				await prisma.albumInCart.delete({
+					where: {
+						userId_albumId: {
+							userId: user.id,
+							albumId: albumInCart.albumId,
+						},
+					},
+				})
+			}
+		}
+
+		// Upsert present records
+		for (const albumInCart of newCart) {
 			albumInCart.userId = user.id
 			await prisma.albumInCart.upsert({
 				where: {

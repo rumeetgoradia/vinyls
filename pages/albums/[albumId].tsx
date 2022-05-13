@@ -1,5 +1,7 @@
+import { CartContext, CartContextValues } from "@cart"
 import {
 	Box,
+	Button,
 	Flex,
 	Grid,
 	GridItem,
@@ -8,7 +10,7 @@ import {
 	Stack,
 	Text,
 } from "@chakra-ui/react"
-import { AddToCart, TrackList } from "@components/AlbumPage"
+import { TrackList } from "@components/AlbumPage"
 import { AlbumDetails } from "@components/AlbumPage/AlbumDetails"
 import { Layout } from "@components/Layout"
 import prisma from "@lib/prisma"
@@ -16,6 +18,9 @@ import { Album, Song } from "@prisma/client"
 import { GetStaticPaths, GetStaticProps, NextPage } from "next"
 import Image from "next/image"
 import NextLink from "next/link"
+import { useContext } from "react"
+import { IoIosStar, IoIosStarOutline } from "react-icons/io"
+import { IoCartOutline } from "react-icons/io5"
 
 export const getStaticPaths: GetStaticPaths = async () => {
 	const albums = await prisma.album.findMany()
@@ -71,6 +76,7 @@ type AlbumPageProps = {
 }
 const AlbumPage: NextPage<AlbumPageProps> = ({
 	album: {
+		id,
 		artists,
 		coverArtBase64,
 		coverArtUrl,
@@ -79,12 +85,17 @@ const AlbumPage: NextPage<AlbumPageProps> = ({
 		price,
 		producers,
 		title,
-		totalLength,
 		year,
 		description,
 	},
 	songs,
 }) => {
+	const { addAlbumToCart } = useContext<CartContextValues>(CartContext)
+
+	const addToCart = (quantity: number) => {
+		addAlbumToCart(id, quantity)
+	}
+
 	return (
 		<Layout title={title}>
 			<Grid gap={10} templateColumns="repeat(6, 1fr)">
@@ -155,7 +166,27 @@ const AlbumPage: NextPage<AlbumPageProps> = ({
 							${price}
 						</Text>
 						<Spacer />
-						<AddToCart />
+						<Flex flexDir={{ base: "column", md: "row" }}>
+							<Button
+								onClick={() => addAlbumToCart(id)}
+								variant="ghost"
+								leftIcon={<IoCartOutline />}
+								w={{ base: "full", md: "200px" }}
+							>
+								Add To Cart
+							</Button>
+							{/* TODO add wishlist logic, and check if in wishlist  for icon  */}
+							<Button
+								onClick={() => {}}
+								variant="outline"
+								leftIcon={true ? <IoIosStar /> : <IoIosStarOutline />}
+								mt={{ base: 2, md: 0 }}
+								ml={{ base: 0, md: 2 }}
+								w={{ base: "full", md: "200px" }}
+							>
+								Add to Wishlist
+							</Button>
+						</Flex>
 					</Flex>
 				</GridItem>
 				<GridItem colSpan={6}>
