@@ -1,8 +1,6 @@
 import prisma from "@lib/prisma"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { verify } from "@node-rs/bcrypt"
 import NextAuth from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
 import FacebookProvider from "next-auth/providers/facebook"
 import GithubProvider from "next-auth/providers/github"
 import GoogleProvider from "next-auth/providers/google"
@@ -32,39 +30,39 @@ export default NextAuth({
 			clientId: process.env.SPOTIFY_ID ?? "",
 			clientSecret: process.env.SPOTIFY_SECRET ?? "",
 		}),
-		CredentialsProvider({
-			credentials: {
-				email: {
-					label: "Email",
-					type: "email",
-					placeholder: "Enter your email",
-				},
-				password: {
-					label: "Password",
-					type: "password",
-					placeholder: "Enter password",
-				},
-			},
-			async authorize(credentials) {
-				if (!credentials) return null
+		// CredentialsProvider({
+		// 	credentials: {
+		// 		email: {
+		// 			label: "Email",
+		// 			type: "email",
+		// 			placeholder: "Enter your email",
+		// 		},
+		// 		password: {
+		// 			label: "Password",
+		// 			type: "password",
+		// 			placeholder: "Enter password",
+		// 		},
+		// 	},
+		// 	async authorize(credentials) {
+		// 		if (!credentials) return null
 
-				const user = await prisma.user.findUnique({
-					where: { email: credentials.email },
-				})
+		// 		const user = await prisma.user.findUnique({
+		// 			where: { email: credentials.email },
+		// 		})
 
-				if (!user) return null
+		// 		if (!user) return null
 
-				if (
-					!user.password ||
-					!(await verify(credentials.password, user.password))
-				) {
-					return null
-				}
+		// 		if (
+		// 			!user.password ||
+		// 			!(await verify(credentials.password, user.password))
+		// 		) {
+		// 			return null
+		// 		}
 
-				user.password = null
-				return user
-			},
-		}),
+		// 		user.password = null
+		// 		return user
+		// 	},
+		// }),
 	],
 	adapter: PrismaAdapter(prisma),
 	session: {
@@ -72,12 +70,7 @@ export default NextAuth({
 		strategy: "jwt",
 	},
 	secret: process.env.SECRET,
-	pages: {
-		signIn: "/account/signin",
-	},
+	// pages: {
+	// 	signIn: "/account/signin",
+	// },
 })
-
-// Sign in / sign up
-// can't register if email already exists.
-// if logging in through credentials, if password doesn't exist or password is wrong --> wrong password error
-// if logging in or registering through credentials and OAuth already exists (account exists but password doesn't) ->

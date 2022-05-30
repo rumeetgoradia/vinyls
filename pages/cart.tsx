@@ -1,5 +1,5 @@
 import { CartContext, CartContextValues } from "@cart"
-import { Box, Button, Flex, Text, VStack } from "@chakra-ui/react"
+import { Box, Button, Flex, Text } from "@chakra-ui/react"
 import { AlbumPreviewInCart } from "@components/Cart"
 import { Layout } from "@components/Layout"
 import { DetailedAlbumInCart } from "@constants"
@@ -45,68 +45,57 @@ const CartPage: NextPage = () => {
 	}
 
 	return (
-		<Layout title="Cart">
-			<VStack spacing={10} align="flex-start">
-				<Text as="h1" fontSize="4xl">
-					Cart
-				</Text>
-				{cart && cart.length ? (
-					<>
-						<Box w="full">
-							{cart.map((albumInCart) => (
-								<Box w="full" key={`${albumInCart.id}-in-cart`}>
-									<AlbumPreviewInCart
-										album={albumInCart}
-										addAlbumToCart={addAlbumToCart}
-										removeAlbumFromCart={removeAlbumFromCart}
-										setQuantityOfAlbumInCart={setQuantityOfAlbumInCart}
-									/>
-								</Box>
-							))}
+		<Layout title="Cart" pageHeader="Cart">
+			{cart && cart.length ? (
+				<>
+					<Box w="full">
+						{cart.map((albumInCart) => (
+							<Box w="full" key={`${albumInCart.id}-in-cart`}>
+								<AlbumPreviewInCart
+									album={albumInCart}
+									addAlbumToCart={addAlbumToCart}
+									removeAlbumFromCart={removeAlbumFromCart}
+									setQuantityOfAlbumInCart={setQuantityOfAlbumInCart}
+								/>
+							</Box>
+						))}
+					</Box>
+					<Flex justify="space-between" w="full" mt={6} px={4}>
+						<Box>
+							<Text fontSize="2xl">Cart Subtotal</Text>
+							<Text>Shipping and taxes calculated at checkout.</Text>
 						</Box>
-						<Flex justify="space-between" w="full" mt={6} px={4}>
-							<Box>
-								<Text fontSize="2xl">Cart Subtotal</Text>
-								<Text>Shipping and taxes calculated at checkout.</Text>
-							</Box>
-							<Box>
-								<Text fontSize="2xl" fontWeight={600} textAlign="right">
-									${getTotalPriceOfCart().toFixed(2)}
-								</Text>
-							</Box>
-						</Flex>
-						{/* TODO checkout page */}
-						<Flex w="full" justify="flex-end" mt={4} px={4}>
-							<Button variant="ghost" rightIcon={<BsArrowRight />} size="lg">
-								Check Out
-							</Button>
-						</Flex>
-					</>
-				) : (
-					<Flex
-						w="full"
-						py={6}
-						justify="center"
-						align="center"
-						flexDir="column"
-					>
-						<Text as="h2" color="gray.400" fontSize="2xl" mb={4}>
-							Your cart is empty!
-						</Text>
-						<Link href="/" passHref>
-							<Button
-								as="a"
-								leftIcon={<IoCartOutline />}
-								variant="ghost"
-								size="lg"
-							>
-								Continue Shopping
-							</Button>
-						</Link>
+						<Box>
+							<Text fontSize="2xl" fontWeight={600} textAlign="right">
+								${getTotalPriceOfCart().toFixed(2)}
+							</Text>
+						</Box>
 					</Flex>
-				)}
-				{/* TODO wishlist section */}
-			</VStack>
+					{/* TODO checkout page */}
+					<Flex w="full" justify="flex-end" mt={4} px={4}>
+						<Button variant="ghost" rightIcon={<BsArrowRight />} size="lg">
+							Check Out
+						</Button>
+					</Flex>
+				</>
+			) : (
+				<Flex w="full" py={6} justify="center" align="center" flexDir="column">
+					<Text as="h2" color="gray.400" fontSize="2xl" mb={4}>
+						Your cart is empty!
+					</Text>
+					<Link href="/" passHref>
+						<Button
+							as="a"
+							leftIcon={<IoCartOutline />}
+							variant="ghost"
+							size="lg"
+						>
+							Continue Shopping
+						</Button>
+					</Link>
+				</Flex>
+			)}
+			{/* TODO wishlist section */}
 		</Layout>
 	)
 }

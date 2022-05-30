@@ -11,7 +11,6 @@ import {
 	PopoverHeader,
 	PopoverTrigger,
 	Text,
-	VStack,
 } from "@chakra-ui/react"
 import { ACCOUNT_LINKS } from "@constants"
 import { createTransition } from "@utils"
@@ -143,28 +142,17 @@ const AccountPopover: React.FC<AccountPopoverProps> = ({ buttonProps }) => {
 							</Flex>
 						</>
 					) : (
-						<VStack spacing={4} p={4}>
+						<Box w="full" p={4}>
 							<Button
 								onClick={() => {
-									if (router.pathname !== "/account/signin") signIn()
-									closePopover()
+									signIn("spotify")
 								}}
 								variant="ghost"
 								w="full"
 							>
 								Sign In
 							</Button>
-							<Button
-								onClick={() => {
-									if (router.pathname !== "/account/register") register()
-									closePopover()
-								}}
-								variant="outline"
-								w="full"
-							>
-								Create Account
-							</Button>
-						</VStack>
+						</Box>
 					)}
 				</PopoverBody>
 			</PopoverContent>

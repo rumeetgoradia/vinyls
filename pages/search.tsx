@@ -1,4 +1,4 @@
-import { Box, Flex, Spinner, Text, VStack } from "@chakra-ui/react"
+import { Box, Flex, Spinner, Text } from "@chakra-ui/react"
 import { AlbumsGrid } from "@components/AlbumsGrid"
 import { Layout } from "@components/Layout"
 import { SearchBar } from "@components/SearchBar"
@@ -100,7 +100,14 @@ const SearchPage: NextPage<SearchPageProps> = ({ albums }) => {
 	}
 
 	return (
-		<Layout title="Search">
+		<Layout
+			title="Search"
+			pageHeader={
+				!isLoading
+					? `Search${filter && filterField ? ` results for "${filter}"` : ""}`
+					: undefined
+			}
+		>
 			<Flex
 				justify="center"
 				align="center"
@@ -127,28 +134,14 @@ const SearchPage: NextPage<SearchPageProps> = ({ albums }) => {
 				</Box>
 			</Flex>
 			{!isLoading && (
-				<VStack
-					spacing={10}
-					justify="flex-start"
-					align="flex-start"
-					position="relative"
-					zIndex={99}
-				>
-					<Text
-						as="h1"
-						fontWeight={300}
-						fontSize={{ base: "3xl", sm: "4xl", md: "5xl" }}
-						lineHeight={1.15}
-					>
-						Search{filter && filterField ? ` results for "${filter}"` : ""}
-					</Text>
+				<>
 					<SearchBar
 						albums={albums}
 						filter={filter}
 						filterField={filterField}
 					/>
 					{showResults()}
-				</VStack>
+				</>
 			)}
 		</Layout>
 	)

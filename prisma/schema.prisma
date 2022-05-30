@@ -132,10 +132,11 @@ model AlbumInCart {
 }
 
 model AlbumInWishlist {
-  user    User   @relation(fields: [userId], references: [id])
+  user    User     @relation(fields: [userId], references: [id])
   userId  String
-  album   Album  @relation(fields: [albumId], references: [id])
+  album   Album    @relation(fields: [albumId], references: [id])
   albumId String
+  addedAt DateTime @default(now())
 
   @@id([userId, albumId])
 }

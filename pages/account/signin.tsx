@@ -1,4 +1,4 @@
-import { Box, Flex, Text, VStack } from "@chakra-ui/react"
+import { Box, Flex, Text } from "@chakra-ui/react"
 import { SignInForm } from "@components/Account/Auth/SignInForm"
 import { Layout } from "@components/Layout"
 import { createTransition } from "@utils"
@@ -47,46 +47,36 @@ const SignInPage: NextPage<SignInPageProps> = ({
 	providers,
 }) => {
 	return (
-		<Layout title="Sign In">
-			<VStack spacing={10} align="flex-start">
-				<Text
-					as="h1"
-					fontWeight={300}
-					fontSize={{ base: "4xl", md: "5xl" }}
-					lineHeight={1.15}
-				>
-					Sign In
-				</Text>
-				<SignInForm
-					providers={providers}
-					callbackUrl={callbackUrl}
-					error={error}
-				/>
-				<Flex align="center" w="full" direction="row">
-					<Text mr={2}>New user?</Text>
-					<NextLink href="/account/register" passHref>
-						<Flex
-							as="a"
-							title="Create Account"
-							color="brand.900"
-							align="center"
-							role="group"
-							_focus={{}}
+		<Layout title="Sign In" pageHeader="Sign In">
+			<SignInForm
+				providers={providers}
+				callbackUrl={callbackUrl}
+				error={error}
+			/>
+			<Flex align="center" w="full" direction="row">
+				<Text mr={2}>New user?</Text>
+				<NextLink href="/account/register" passHref>
+					<Flex
+						as="a"
+						title="Create Account"
+						color="brand.900"
+						align="center"
+						role="group"
+						_focus={{}}
+					>
+						Create an account{" "}
+						<Box
+							ml={2}
+							transition={createTransition("margin")}
+							_groupHover={{
+								ml: 3,
+							}}
 						>
-							Create an account{" "}
-							<Box
-								ml={2}
-								transition={createTransition("margin")}
-								_groupHover={{
-									ml: 3,
-								}}
-							>
-								<BsArrowRight />
-							</Box>
-						</Flex>
-					</NextLink>
-				</Flex>
-			</VStack>
+							<BsArrowRight />
+						</Box>
+					</Flex>
+				</NextLink>
+			</Flex>
 		</Layout>
 	)
 }

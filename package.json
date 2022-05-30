@@ -23,6 +23,7 @@
     "@node-rs/bcrypt": "^1.6.0",
     "@plaiceholder/next": "^2.3.0",
     "@prisma/client": "^3.13.0",
+    "@stripe/stripe-js": "^1.29.0",
     "framer-motion": "^6.3.3",
     "next": "^12.1.5",
     "next-auth": "^4.3.4",

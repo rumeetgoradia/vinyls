@@ -1,4 +1,4 @@
-import { Box, Link, Text, VStack } from "@chakra-ui/react"
+import { Box, Flex, Link, Text } from "@chakra-ui/react"
 import { AlbumsGrid } from "@components/AlbumsGrid"
 import { Layout } from "@components/Layout"
 import { SearchBar } from "@components/SearchBar"
@@ -23,7 +23,7 @@ type HomePageProps = {
 const HomePage: NextPage<HomePageProps> = ({ albums }) => {
 	return (
 		<Layout>
-			<VStack spacing={10}>
+			<Flex w="full" justify="center" align="center">
 				<Text
 					as="h1"
 					fontSize={{ base: "7xl", sm: "8xl" }}
@@ -47,9 +47,9 @@ const HomePage: NextPage<HomePageProps> = ({ albums }) => {
 					</Box>
 					Vinyls
 				</Text>
-				<SearchBar albums={albums} />
-				<AlbumsGrid albums={albums} />
-			</VStack>
+			</Flex>
+			<SearchBar albums={albums} />
+			<AlbumsGrid albums={albums} />
 		</Layout>
 	)
 }

@@ -27,6 +27,11 @@ export type SignInCredentials = {
 	password: string
 }
 
+export type RegisterCredentials = SignInCredentials & {
+	name: string
+	confirmPassword: string
+}
+
 export const SIGN_IN_ERROR_MESSAGES: { [k: string]: string } = {
 	Signin: "Try signing with a different account.",
 	OAuthSignin: "Try signing with a different account.",
